@@ -1,0 +1,20 @@
+{
+  "short_name": "Padachone",
+  "name": "P A D A C H O N E",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "https://www.padachone.com",
+  "theme_color": "#ffffff",
+  "background_color": "#fff",
+  "display": "standalone"
+}

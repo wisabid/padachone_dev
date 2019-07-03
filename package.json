@@ -1,0 +1,55 @@
+{
+  "name": "padachone_dev",
+  "version": "2.0.0",
+  "homepage": "https://dev.padachone.com",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.1.1",
+    "@material-ui/icons": "^4.2.0",
+    "@sentry/browser": "^5.2.0",
+    "country-state-city": "^0.1.2",
+    "emailjs-com": "^2.3.2",
+    "moment": "^2.24.0",
+    "notistack": "^0.8.6",
+    "react": "^16.8.6",
+    "react-bingmaps": "^3.6.1",
+    "react-cookie-consent": "^2.3.1",
+    "react-count-down": "^1.2.0",
+    "react-country-region-selector": "^1.4.3",
+    "react-dom": "^16.8.6",
+    "react-geolocated": "^2.4.1",
+    "react-live-clock": "^3.1.0",
+    "react-messenger-customer-chat": "^0.7.2",
+    "react-scripts": "3.0.0",
+    "react-sound": "^1.2.0",
+    "react-swipeable-views": "^0.13.3",
+    "react-swipeable-views-utils": "^0.13.3",
+    "typeface-roboto": "0.0.54"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "echo 'dev.padachone.com' > ./build/CNAME && gh-pages -d build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.0.1"
+  }
+}
