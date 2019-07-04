@@ -32,7 +32,7 @@ const Travel = (props) => {
                         :<div>Getting the location data&hellip; </div>
             }  
                      {/* me */}
-            <Traveltimes lat="52.3741198" lon="4.9630779" music={music} setMusic={setMusic} volume={volume} setVolume={setVolume} method={props.method} school={props.school}/>
+            {/* <Traveltimes lat="52.3741198" lon="4.9630779" music={music} setMusic={setMusic} volume={volume} setVolume={setVolume} method={props.method} school={props.school}/> */}
         </>
     )
 }
