@@ -20,7 +20,8 @@ import Subscribe from '../Subscribe';
 import Finetune from '../Finetune';
 import Lab from '../Lab';
 import {FT_PRAYER} from '../../utils/constants';
-import LandingPage from './LandingPage'
+import LandingPage from './LandingPage';
+import SiteMessage from '../Messages/SiteMessage';
 // import FbChat from '../FbChat/FbChat'
 
 const theme = createMuiTheme({
@@ -184,6 +185,8 @@ function App() {
             <Zoom in={true}>
                 <SpecialDay display={display} setdisplay={setdisplay}/>
             </Zoom>
+            {/* DEV MESSAGE */}
+            {/* <SiteMessage type="warning" message={`This is a dev environment.`} action="" exception={true}/> */}
             {!finished && page === 'Setup' && <LandingPage finished={(locationstate) => handlefinished(locationstate)} country={country} region={region} place={place}/>}
             {msg[0] && <Messages msg={msg[1]}/>}
             {page === 'Travel' && <Travel method={method} school={school}/>}
