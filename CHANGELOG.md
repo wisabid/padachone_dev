@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - slide animation on landing navs and other pages
 - API change by accepting address
 - Added Hard reset option
+- to be : confirmation window for hard reset
+- to be : fb
 
 
 ## [1.0.0] - 2019-05-19
