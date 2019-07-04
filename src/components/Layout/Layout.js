@@ -46,7 +46,7 @@ const Layout = ({country, region, place, method, school, pdate, startup}) => {
                 <Menus drawerOpen={drawerOpen} handleDrawerToggle={handleDrawerToggle}/>
                 <Header 
                     startup={startup} 
-                    place={localStorage.getItem(`padachone:place`).split(',')[0]}
+                    place={localStorage.getItem(`padachone:place`) && localStorage.getItem(`padachone:place`).split(',')[0]}
                     pdate={data.data.date.readable}
                     handleDrawerToggle={handleDrawerToggle}
                 />
