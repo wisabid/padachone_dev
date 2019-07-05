@@ -10,7 +10,7 @@ const Travel = (props) => {
     const [volume, setVolume] = React.useState(false);
     return (
         <>
-            <Bgmusic bgm={bgm} volume={volume} setPlaying={() => {setMusic({show: true, playing : true})}}/>
+            {/* <Bgmusic bgm={bgm} volume={volume} setPlaying={() => {setMusic({show: true, playing : true})}}/> */}
             {!props.isGeolocationAvailable
                 ?<SiteMessage type="info" message={`Your browser does not support Geolocation. Please refresh to go back`} action="Refresh" />
                 :!props.isGeolocationEnabled

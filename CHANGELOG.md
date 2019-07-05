@@ -25,8 +25,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API change by accepting address
 - Added Hard reset option
 - confirmation window for hard reset
-- to be : headless cms
-- to be : firebase
+- reduce place board width in travel
+- optimize api call in useprayer
+- back button in travel
+- travel header
+- reduce msg display time
+- disbaled fb dialog
+- disabled music off by default
+- contribution guide
+- to do : avoid security leak by hiding credentials
+- to do : optimize bundle, cdn
+- to do : headless cms
+- to do : firebase
 
 
 ## [1.0.0] - 2019-05-19

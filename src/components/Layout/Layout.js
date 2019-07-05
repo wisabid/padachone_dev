@@ -59,9 +59,9 @@ const Layout = ({country, region, place, method, school, pdate, startup}) => {
     else {
         return (
             <>
-            <h5>{data.data || (data.error === 'Failed to fetch')?<SiteMessage type="warning" message={`Oops ! Please try after sometime.`} action="Refresh" />:data.error}</h5> 
+            {/* <h5>{data.data || (data.error === 'Failed to fetch')?<SiteMessage type="warning" message={`Oops ! Please try after sometime.`} action="Refresh" />:data.error}</h5>  */}
             {(data.data || data.error)
-                ?<p>Please <Button color="primary" onClick={() => startup({finished: false})}>refresh</Button> to start over!</p>
+                ?<SiteMessage type="warning" message={`Oops ! Please try after sometime.`} action="Refresh" />
                 :<CircularProgress className={classes.progress} color="secondary" />
             }
            </>       
