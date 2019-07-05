@@ -185,7 +185,7 @@ function App() {
     localStorage.removeItem('padachone_msg6');
     localStorage.removeItem('padachone_msg7');
     if (!localStorage.getItem('padachone_msg9')) {
-      const message = `Chat with us (Bottom right corner)and pass in your feedback/comments about new features/updates. `;
+      const message = `Chat with us and pass in your feedback/comments. `;
       setMsg(() => {
         localStorage.setItem('padachone_msg9', message)
         return [true, message]
