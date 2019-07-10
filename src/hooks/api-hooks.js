@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import {getPDdata, getMonthYearNumber} from '../utils/index';
-import {BING_API, FT_PRAYER} from '../utils/constants';
+import {getPDdata, getMonthYearNumber, addUniqueVisitor} from '../utils/index';
+import {BING_API, FT_PRAYER, IPSTACK_API, IGNORE_HOSTS} from '../utils/constants';
 import {UserContext} from '../store/context/userContext';
 export const usePrayer = ({country='Netherlands', place, region="Noord-Holland", date, method=8, school=0}) => {
     const {forceTrigger} = useContext(UserContext);
@@ -32,7 +32,6 @@ export const usePrayer = ({country='Netherlands', place, region="Noord-Holland",
                 return key;
             })
             const dte = getPDdata();
-            debugger
             const timingsData = rawdata.data.filter(item => item.date.readable === dte);
             const data = {...rawdata, data : {...timingsData[0]}}
             
@@ -134,7 +133,7 @@ export const useCurrentLocation = ({lat, lon}) => {
             });
         
             const data = await result.json();
-            console.log('%c LOCATION DATA'+JSON.stringify(data), 'color:blue')
+            // console.log('%c LOCATION DATA'+JSON.stringify(data), 'color:blue')
             const locationData = data.resourceSets[0].resources[0].address.addressLine+', '+data.resourceSets[0].resources[0].address.adminDistrict+', '+data.resourceSets[0].resources[0].address.countryRegion;
             // setCurrentloc(data.resourceSets[0].resources[0].address.formattedAddress);
             setCurrentloc({data : locationData, formattedaddress: data.resourceSets[0].resources[0].address.formattedAddress });
@@ -199,9 +198,10 @@ export const useDrawer = () => {
 }
 
 export const useRenderCounts = (page) => {
+    const colors = ['red', 'green', 'lightblue', 'orange', 'grey']
     const renders = useRef(0);
     useEffect(() => {
-        console.log('%c FT Renders '+page+' : '+renders.current++, 'font-size: 30px;color: green');
+        console.log('%c FT Renders '+page+' : '+renders.current++, `font-size: 30px;color: ${colors[Math.floor(Math.random()*5)]}`);
     })
 }
 
@@ -218,6 +218,42 @@ export const useForceTrigger = ({setModal:setTrigger, params, ftname, setData}) 
             setData({})
         }        
     }, [forceTrigger])
+}
+
+export const useVisitorDetails = () => {
+    const [visitordata, setVisitordata] = useState({});
+    const API = `https://api.ipstack.com/check?access_key=${IPSTACK_API}`;
+    const getVisitorDetails = async() => {
+        const results = await fetch(API, {
+            headers : {
+                Accept : 'Application/data'
+            }
+        });
+        const data = await results.json();
+        console.log('VS', data);
+        debugger;
+        if (data.ip) {
+            sessionStorage.setItem('padachone_visitordata', JSON.stringify(data));
+            addUniqueVisitor(data);
+        }
+        if (data.success) {
+            setVisitordata(data);
+        }       
+           
+    }
+    useEffect(() => {
+        debugger;
+        if (IGNORE_HOSTS.indexOf(window.location.hostname) === -1) {
+            if (sessionStorage.getItem('padachone_visitordata')) {
+                setVisitordata(JSON.parse(sessionStorage.getItem('padachone_visitordata')))
+            }
+            else {
+                getVisitorDetails();
+            }
+        }
+    }, []);
+
+    return visitordata;
 }
 
 

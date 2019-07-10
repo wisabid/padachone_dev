@@ -15,7 +15,8 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import {P_MENUS} from '../../utils/constants';
 import {UserContext} from '../../store/context/userContext';
-import bg from '../../assets/images/bg-new.png';
+import bg from '../../assets/images/bgbrandnewnew.gif';
+import {useRenderCounts} from  '../../hooks/api-hooks';
 
 // import GridListTile from '@material-ui/core/GridListTile';
 // import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -85,7 +86,7 @@ const useStyles = makeStyles(theme => ({
   },
   text: {
     minHeight: '83px',
-    color: 'rgba(255, 255, 255, 0.7)'
+    color: '#03a9f4'
     // color: '#000'
   }
 }));
@@ -93,6 +94,7 @@ const useStyles = makeStyles(theme => ({
 const cards = P_MENUS;
 
 export default function Album() {
+  useRenderCounts('AppPages.js');  
   const classes = useStyles();
   const {handleNav} = useContext(UserContext);
   
@@ -102,7 +104,7 @@ export default function Album() {
         {/* Hero unit */}        
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
-          <Grid container spacing={1} style={{backgroundImage: `url(${bg})`, backgroundPosition: 'right bottom',}}>
+          <Grid container spacing={1} style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center',backgroundRepeat:'no-repeat', backgroundColor: '#fff'}}>
             {cards.map((card, indx) => (
               <Grid item key={`${indx}-${card.page}`} xs={6} sm={6} md={4} style={{padding:'0px', background:'transparent'}}>
                 <Card className={classes.card}>
@@ -116,7 +118,7 @@ export default function Album() {
                   //   onClick={() => handleNav(card.page === 'Home'?'SetMeup':card.page)}
                   // > */}
                     <Button color="primary" className={`${classes.text} landing-navs`} style={{animationDelay: `${indx}s`}}>
-                      <Typography gutterBottom variant="h5" component="h2">
+                      <Typography gutterBottom variant="h6" component="h2" style={{fontWeight:'bold'}}>
                         {card.label === 'Home'?'Set me up':card.label}
                       </Typography>
                     </Button>
