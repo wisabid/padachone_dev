@@ -119,6 +119,7 @@ export const addUniqueVisitor = (visitor) => {
         db.collection("visitors")
             .where("date", "==", dt)
             .where("data.IPv4", "==", visitor.IPv4)
+            .where("host", "==", window.location.hostname)
             .get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data());
