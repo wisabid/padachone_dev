@@ -222,35 +222,30 @@ export const useForceTrigger = ({setModal:setTrigger, params, ftname, setData}) 
 
 export const useVisitorDetails = () => {
     const [visitordata, setVisitordata] = useState({});
-    const API = `https://api.ipstack.com/check?access_key=${IPSTACK_API}`;
+    // const API = `https://api.ipstack.com/check?access_key=${IPSTACK_API}`;
+    const API = `https://geoip-db.com/json/`;
     const getVisitorDetails = async() => {
         const results = await fetch(API, {
             headers : {
-                Accept : 'Application/data'
+                Accept : 'application/json'
             }
         });
         const data = await results.json();
         console.log('VS', data);
-        debugger;
-        if (data.ip) {
+        if (data.IPv4) {
             sessionStorage.setItem('padachone_visitordata', JSON.stringify(data));
             addUniqueVisitor(data);
         }
-        if (data.success) {
-            setVisitordata(data);
-        }       
+        setVisitordata(data);
            
     }
     useEffect(() => {
-        debugger;
-        if (IGNORE_HOSTS.indexOf(window.location.hostname) === -1) {
             if (sessionStorage.getItem('padachone_visitordata')) {
                 setVisitordata(JSON.parse(sessionStorage.getItem('padachone_visitordata')))
             }
-            else {
-                getVisitorDetails();
+            else if (IGNORE_HOSTS.indexOf(window.location.hostname) === -1) {
+                    getVisitorDetails();
             }
-        }
     }, []);
 
     return visitordata;

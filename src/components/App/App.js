@@ -137,7 +137,6 @@ function App() {
       setModal({show : true, name : 'Finetune'})
     }
     else if (page === 'reset') {
-      debugger;
       setModal({show : true, 
         name : 'ConfirmAction', 
         message: `<p style={{margin:0}}>This will reset all your settings which include Country, region & address Selection in addition to wiping out Fine tune preferences if any. Would you like to proceed ?</p>`,
