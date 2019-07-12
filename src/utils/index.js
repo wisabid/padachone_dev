@@ -130,7 +130,7 @@ export const addUniqueVisitor = (visitor) => {
                 }
                 else {
                     db.collection("visitors")
-                        .add({data : visitor, date: dt, host : window.location.hostname})
+                        .add({data : visitor, date: dt, host : window.location.hostname, timestamp : new Date()})
                         .then(() => {
                             console.log('Successfully updated visitor data');
                             return
