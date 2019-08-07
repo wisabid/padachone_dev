@@ -44,7 +44,6 @@ function App() {
   
   useRenderCounts('App.js'); 
   const [msgbroadcast] = useMessageBroadcast();
-  console.log('%c '+JSON.stringify(msgbroadcast), 'color:orange;font-size:20px;');
   // Global State 
   const [tz, setTz] = useState('');
   const [page, setPage] = useState('Setup');
@@ -190,7 +189,7 @@ function App() {
     localStorage.removeItem('padachone_msg6');
     localStorage.removeItem('padachone_msg7');
     if (msgbroadcast) {
-      const message = msgbroadcast;
+      // const message = `Chat with us and pass in your feedback/comments. `;
       setMsg(() => {
         // localStorage.setItem('padachone_msg9', message)
         return [true, msgbroadcast]
