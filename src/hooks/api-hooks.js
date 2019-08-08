@@ -310,10 +310,10 @@ export const useMessageBroadcast = () => {
             client.query({
                 query: gql`
                 query{
-                    allMessageBroadcasts {
+                    allMessageBroadcastTests {
                       edges {
                         node {
-                          message        
+                          content        
                         }
                       }
                     }
@@ -331,7 +331,8 @@ export const useMessageBroadcast = () => {
                 `
             }).then(response => {
                 console.log('%c GraphQL Journey begins...'+JSON.stringify(response), 'color:lightblue;font-size:30px;');
-                setMsg(RichText.asText(response.data.allMessageBroadcasts.edges[0].node.message));
+                // setMsg(RichText.asText(response.data.allMessageBroadcasts.edges[0].node.message));
+                setMsg(response.data.allMessageBroadcastTests.edges[0].node.content);
             }).catch(error => {
                 console.error(error);
             });

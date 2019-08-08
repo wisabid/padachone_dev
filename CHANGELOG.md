@@ -147,5 +147,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.1.0] - 2019-07-..
 ### Added
 - Apollo client & graphql for prismic
+- Materialui LAB for skeleton
+
+### Changed
+- Message display to accomodate image as well
+- Removed prismic helper at hooks side
+- Increased flash message display timeout
+
+### CHECKLIST
+- Change graphql msg broadcast document to normal
 
 
