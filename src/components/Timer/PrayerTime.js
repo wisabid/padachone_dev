@@ -24,7 +24,7 @@ const styles = {
 const PrayerTime = ({anim, setAnim, travel=false, location=''}) => {
     useRenderCounts('PrayerTime.js');
     const [music, setMusic] = useState({show: false, playing : false});
-    const [volume, setVolume] = React.useState(false);
+    const [volume, setVolume] = React.useState(true);
     useEffect(() => {
         if (anim[0]) {
             setVolume(true);
@@ -35,7 +35,7 @@ const PrayerTime = ({anim, setAnim, travel=false, location=''}) => {
     }, [anim])
     return (
         <>
-        <Bgmusic bgm={bgm} volume={true} setPlaying={() => {setMusic({show: true, playing : true})}}/>
+        <Bgmusic bgm={bgm} volume={volume} setPlaying={() => {setMusic({show: true, playing : true})}}/>
         <div style={{overflow: 'hidden'}}>                
                 {anim[0] && <div className="Prayer-time" 
                     style={styles}>
