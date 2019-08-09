@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - to do : avoid security leak by hiding credentials
 - to do : optimize bundle, cdn
 - to do : headless cms
+- to do : admin dashboard
 
 
 ## [1.0.0] - 2019-05-19
