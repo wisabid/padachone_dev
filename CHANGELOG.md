@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - firebase : https://sebhastian.com/react-firestore
 - read on https://opensource.guide/
+- newsletters in lab
 - to do : flash of all importatn users
 - to do : custom trace and metrics on app using firebase performance monitoring
 - to do : schedule emails using Bull
@@ -148,13 +149,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Apollo client & graphql for prismic
 - Materialui LAB for skeleton
+- Newsletters list in Lab
+- added graphql document names as constants
+- Bgm sets in when prayer time boy appears
+- Made timeout display dynamic with Prismic
 
 ### Changed
 - Message display to accomodate image as well
 - Removed prismic helper at hooks side
-- Increased flash message display timeout
+
 
 ### CHECKLIST
-- Change graphql msg broadcast document to normal
+
 
 

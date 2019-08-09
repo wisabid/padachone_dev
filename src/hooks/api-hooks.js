@@ -310,10 +310,11 @@ export const useMessageBroadcast = () => {
             client.query({
                 query: gql`
                 query{
-                    allMessageBroadcastTests {
+                    allMessageBroadcasts {
                       edges {
                         node {
-                          content        
+                          message  
+                          timeout      
                         }
                       }
                     }
@@ -332,7 +333,7 @@ export const useMessageBroadcast = () => {
             }).then(response => {
                 console.log('%c GraphQL Journey begins...'+JSON.stringify(response), 'color:lightblue;font-size:30px;');
                 // setMsg(RichText.asText(response.data.allMessageBroadcasts.edges[0].node.message));
-                setMsg(response.data.allMessageBroadcastTests.edges[0].node.content);
+                setMsg(response);
             }).catch(error => {
                 console.error(error);
             });
