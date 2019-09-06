@@ -8,7 +8,7 @@ import ApolloClient from "apollo-client";
 import gql from "graphql-tag";
 
 import {getPDdata, getMonthYearNumber, addUniqueVisitor} from '../utils/index';
-import {BING_API, FT_PRAYER, IPSTACK_API, IGNORE_HOSTS, PRISMIC_TOKEN} from '../utils/constants';
+import {BING_API, FT_PRAYER, IPSTACK_API, IGNORE_HOSTS, PRISMIC_TOKEN, PRISMIC_SITEDESCRIPTION_DOC, PRISMIC_SITEMEDIAS_DOC} from '../utils/constants';
 import {UserContext} from '../store/context/userContext';
 export const usePrayer = ({country='Netherlands', place, region="Noord-Holland", date, method=8, school=0}) => {
     const {forceTrigger} = useContext(UserContext);
@@ -328,10 +328,39 @@ export const useMessageBroadcast = () => {
                           }
                         }
                     }
+                    allSiteMedias {
+                        edges {
+                          node {
+                            assetName
+                            assetImage
+                            textColor
+                            bgColor
+                          }
+                        }
+                    }
+                    allSiteDescriptions {
+                        edges {
+                          node {
+                            description
+                            textColor
+                            bgColor
+                          }
+                        }
+                    }
+                    allSiteFooters {
+                        edges {
+                            node {
+                                description
+                                textColor
+                                bgColor
+                            }
+                        }
+                    }
                 }                
                 `
             }).then(response => {
                 console.log('%c GraphQL Journey begins...'+JSON.stringify(response), 'color:lightblue;font-size:30px;');
+                console.log('GR', response)
                 // setMsg(RichText.asText(response.data.allMessageBroadcasts.edges[0].node.message));
                 setMsg(response);
             }).catch(error => {
@@ -346,6 +375,43 @@ export const useMessageBroadcast = () => {
         fetchMessage();
     }, []);
     return [msg];
+}
+
+export const useCmsAsset = (...assets) => {
+    const {cmsContents} = useContext(UserContext);
+    const [asset, setAsset] = useState([])
+    useEffect(() => {
+        if (cmsContents.data && cmsContents.data.hasOwnProperty(PRISMIC_SITEMEDIAS_DOC)) {
+          let assetsArray = cmsContents.data[PRISMIC_SITEMEDIAS_DOC].edges.reduce((all,item, index) => {
+              assets.map(assetItem => {
+                  if (assetItem === item.node.assetName) {
+                      all.push(item.node);
+                  }
+                  return assetItem;
+              })
+            return all;
+          },[]);
+          if (assetsArray.length) {
+            setAsset(assetsArray);
+          }
+        }
+    }, [cmsContents]);
+
+      return asset;
+}
+
+export const useSiteTitle = ({docname, options}) => {
+    const {cmsContents} = useContext(UserContext);
+    const [sitetitle, setSitetitle] = useState(options) 
+    useEffect(() => {
+      cmsContents && setSitetitle({
+        description: cmsContents.data[docname].edges[0].node.description,
+        textcolor : cmsContents.data[docname].edges[0].node.textColor,
+        bgcolor : cmsContents.data[docname].edges[0].node.bgColor,
+        showup : true
+      })
+    }, [cmsContents])
+    return sitetitle;
 }
 
 

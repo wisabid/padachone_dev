@@ -1,10 +1,6 @@
 .nl-body {
     text-align: left;
-    padding:5px;
     font-style: italic;
-    border: 1px solid #03a9f4;
-    border-radius: 5px;
-    margin:5px;
 }
 .nl-body img {
     max-width: 100%;

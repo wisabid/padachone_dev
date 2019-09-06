@@ -3,10 +3,8 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import goofy from '../../assets/images/goofy.svg'
-import boo from '../../assets/images/boo.svg'
-import cool from '../../assets/images/cool.svg';
-import {useRenderCounts} from '../../hooks/api-hooks';
+import {PRISMIC_GOOFY_BG, PRISMIC_COOL_BG, PRISMIC_BOO_BG} from '../../utils/constants';
+import {useRenderCounts, useCmsAsset} from '../../hooks/api-hooks';
 
 
 const useStyles = makeStyles(theme => ({
@@ -16,7 +14,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const DismissTimer  = ({dismissMsg, setdismissMsg, anchorEl, setAnchorEl, timerdisplay, setTimerdisplay}) => {    
-    useRenderCounts('DismissTimer.js')
+    useRenderCounts('DismissTimer.js');
+    const [goofy, setGoofy] = useState('');
+    const [cool, setCool] = useState('');
+    const [boo, setBoo] = useState('');
+    const [emojis, setEmojis] = useState({})
+    const assets = useCmsAsset(PRISMIC_GOOFY_BG, PRISMIC_COOL_BG, PRISMIC_BOO_BG);
+    useEffect(() => {
+        if (assets.length) {
+            //setEmojis(asset[0].assetImage.url)
+            assets.map(it => {
+                switch (it.assetName) {
+                    case PRISMIC_GOOFY_BG:
+                        setGoofy(it.assetImage.url);
+                        break;
+                    case PRISMIC_COOL_BG:
+                        setCool(it.assetImage.url);
+                        break;
+                    case PRISMIC_BOO_BG:
+                        setBoo(it.assetImage.url);
+                        break;
+                    default:
+                }
+                return it;
+            })
+            
+        }
+      }, [assets]);
+      
     const classes = useStyles();
     const onClose1 = (event) => {
         setAnchorEl(event.currentTarget);
