@@ -1,6 +1,7 @@
 import * as emailjs from 'emailjs-com';
 import {PRAYERS_ARR} from './constants';
 import {db} from '../config/firebase';
+// import firebase from 'firebase';
 
 export const getPDdata = (type) => {
     const months =  ["Jan","Feb","Mar","Apr","May","Jun","Jul",
@@ -154,3 +155,17 @@ export const addUniqueVisitor = (visitor) => {
     }
     
 }
+
+// export const askForNotifyPermission = async () => {
+//     debugger;
+//     try {
+//       const messaging = firebaseApp.messaging();
+//       await messaging.requestPermission();
+//       const token = await messaging.getToken();
+//       console.log('token do usuário:', token);
+      
+//       return token;
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }

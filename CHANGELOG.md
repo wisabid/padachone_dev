@@ -29,8 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.2.0] - 2019-09-..
 ### Added
--
+- FCM
 ### Changed
+- gitignore
+- Appended GCM id in manifest.json
 ### CHECKLIST
 - REMOVE DEV while going PROD
 

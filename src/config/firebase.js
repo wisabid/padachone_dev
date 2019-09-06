@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import 'firebase/firestore';
 // Add the Performance Monitoring library
 import "firebase/performance";
+import "firebase/messaging";
 
 const firebaseApp = firebase.initializeApp({
     apiKey: "AIzaSyCqASkpIcuegKKvjHtdn5rl4jmZmRzBfwk",
@@ -18,4 +19,10 @@ const db = firebaseApp.firestore();
 // Initialize Performance Monitoring and get a reference to the service
 const perf = firebase.performance();
 
-export { db, perf };
+// FCM 
+const messaging = firebaseApp.messaging();
+messaging.usePublicVapidKey(
+	// Project Settings => Cloud Messaging => Web Push certificates
+  "BG0o7QfKpWsReXHLZ44_6qfhG1OL9bNsaggM0QPhmKu-VaMZaKNzxLejo3RLEnnUt3fJxHKcZLY5pj792lbnR34"
+);
+export { db, perf, messaging };
