@@ -104,18 +104,20 @@ function App() {
 
   useEffect(() => {
     // FCM
-    messaging
-      .requestPermission()
-      .then(async function() {
-        const token = await messaging.getToken();
-        console.log("ACCEPTED", token);
-      })
-      .catch(function(err) {
-        console.log("Unable to get permission to notify.", err);
-      });
-    navigator.serviceWorker.addEventListener("message", message =>
-      console.log("MSG : ", message)
-    );
+    if (messaging) {
+      messaging
+        .requestPermission()
+        .then(async function() {
+          const token = await messaging.getToken();
+          console.log("ACCEPTED", token);
+        })
+        .catch(function(err) {
+          console.log("Unable to get permission to notify.", err);
+        });
+      navigator.serviceWorker.addEventListener("message", message =>
+        console.log("MSG : ", message)
+      );
+    }
     //FCM Ends here
     window.addEventListener("scroll", hideHdrFtr);
     return () => {
