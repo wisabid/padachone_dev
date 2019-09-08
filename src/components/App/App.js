@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import Setup from "../Setup/Setup";
 import stepperData from "../Setup/setup-stepper-data.json";
-import { getPDdata } from "../../utils";
+import { getPDdata, requestNotify } from "../../utils";
 import ErrorBoundary from "../Error/ErrorBoundary";
 import CookieConsent from "react-cookie-consent";
 import Messages from "../Messages";
@@ -28,7 +28,6 @@ import {
   useMessageBroadcast
 } from "../../hooks/api-hooks";
 import Newsletters from "../Newsletters";
-import { messaging } from "../../config/firebase";
 
 const theme = createMuiTheme({
   palette: {
@@ -104,21 +103,7 @@ function App() {
 
   useEffect(() => {
     // FCM
-    if (messaging) {
-      messaging
-        .requestPermission()
-        .then(async function() {
-          const token = await messaging.getToken();
-          console.log("ACCEPTED", token);
-        })
-        .catch(function(err) {
-          console.log("Unable to get permission to notify.", err);
-        });
-      navigator.serviceWorker.addEventListener("message", message =>
-        console.log("MSG : ", message)
-      );
-    }
-    //FCM Ends here
+    requestNotify(visitor);
     window.addEventListener("scroll", hideHdrFtr);
     return () => {
       window.removeEventListener("scroll", hideHdrFtr);
