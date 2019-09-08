@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - FCM
 - Handled firebase push api check for browser (meant for safari)
+- FCM token to firebase
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json
