@@ -103,7 +103,7 @@ function App() {
 
   useEffect(() => {
     // FCM
-    requestNotify(visitor);
+    // requestNotify(visitor);
     window.addEventListener("scroll", hideHdrFtr);
     return () => {
       window.removeEventListener("scroll", hideHdrFtr);
