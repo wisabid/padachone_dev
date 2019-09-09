@@ -201,8 +201,10 @@ export const addUniqueVisitor = visitor => {
 //     }
 //   }
 
+
+
 export const requestNotify = visitor => {
-    
+    debugger;
   if (messaging) {
     // console.log('FCM', await messaging.getToken())
     messaging
@@ -255,4 +257,41 @@ export const requestNotify = visitor => {
     );
   }
   //FCM Ends here
+};
+
+export const addAlert = async ({ prayer, time }) => {
+  const splitForCron = time.split(":");
+  const cronExpression = encodeURIComponent(
+    `${splitForCron[1]} ${splitForCron[0]} * * *`
+  );
+
+  const token = "fbpxzsN80YA:APA91bHcWD6nRpEH5SBIyGYk-shFTmSrGOHgdF28NV3JlxH7POSig1CTExAPp2HYm3FhjG9wZY9ww1KFtxRlfNA39xwW2Q8kdKnPxOcafP_79B8rnvbpW0nAxGeXUlxTYyc2H1D1i_hK";
+  
+    debugger;
+    // cron_expression=*%20*%20*%20*%20*&
+    fetch(
+      `https://www.easycron.com/rest/add?
+    token=7f8b5800988b8daa158e078123a6f181&
+    cron_expression=${cronExpression}&
+    url=https://fcm.googleapis.com/fcm/send&
+    timezone_from=2&timezone=Europe/Amsterdam&
+    cron_job_name=Test-${prayer}-${time}&
+    http_method=POST&
+    custom_timeout=10&
+    http_headers=Authorization%3Akey%3DAAAA3BtrViw%3AAPA91bHwejU0gjRcivKv4nNjfcvply4dS5NkP_OZqQEaDX0LbQFO76J_1Tu9pod_8eGsP_5_bdZoNGNRH4GFAVYcS7UrDH0eE3A83AUW14lKFp_GZE8LVH9ai4-Xz1irPkn0MFPFb7Zu%0AContent-Type%3Aapplication%2Fjson%0Apriority%3Ahigh%0A
+    &posts={"to":"${token}","notification":{"body":"Hi Shabana, Howz my alfie doing?","title":"Padachone.com","click_action":"https://www.padachone.com","icon":"https://www.padachone.com/Padachone-Twitter.png"}}`,
+      {
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/html"
+        }
+      }
+    )
+      .then(function(response) {
+        console.log("CRON", response);
+      })
+      .catch(err => {
+        console.log("CRONNNN", err);
+      });
+  
 };
