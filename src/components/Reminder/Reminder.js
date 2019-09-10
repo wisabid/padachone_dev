@@ -6,6 +6,7 @@ import CheckedIcon from "@material-ui/icons/CheckCircle";
 import { UserContext } from "../../store/context/userContext";
 import { validateUserTimezone } from "../../utils";
 import {addAlert} from '../../utils';
+import { messaging } from "../../config/firebase";
 
 
 const useStyles = makeStyles(theme => ({
@@ -51,7 +52,8 @@ export default function Reminder({ prayer, time}) {
   }, [time]);
 
   // Reminder is only available for same timezone
-  if (validateUserTimezone(tz)) {
+  // Also for Android and chrome only..not for ios safari
+  if (validateUserTimezone(tz) && messaging) {
     return (
       <IconButton
         color="primary"

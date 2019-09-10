@@ -42,10 +42,9 @@ const Prayer = props => {
   const handleAlpha = () => {
     setAlpha(true);
   };
-  
 
   if (timings) {
-      console.log('TIMINGS', timings)
+    console.log("TIMINGS", timings);
     if (!alpha) {
       return (
         <>
@@ -53,9 +52,9 @@ const Prayer = props => {
             let splitdt = timings[prayer].split(" "),
               justtiming = splitdt[0],
               tzone = splitdt[1];
-              
-              console.log('TIMINGS JUST', justtiming)
-              
+
+            console.log("TIMINGS JUST", justtiming);
+
             return (
               <Card className={classes.card} key={index}>
                 <CardContent>
@@ -73,14 +72,12 @@ const Prayer = props => {
                     >
                       .
                     </span>
-
                   </Typography>
                   <Typography variant="h3" component="h2">
                     <strong style={{ color: "#039be5" }}>
                       {/* {timings[prayer]} */}
                       {justtiming}
                     </strong>
-
                   </Typography>
 
                   {/* <Typography className={classes.pos} color="textSecondary">
@@ -96,8 +93,7 @@ const Prayer = props => {
                     {/* <br />
                                     {`"${date.hijri.weekday.en}"`} */}
                   </Typography>
-                <Reminder prayer={prayer} time={justtiming}/>
-
+                  <Reminder prayer={prayer} time={justtiming} />
                 </CardContent>
 
                 {/* <CardActions className={classes.buttonaction}>

@@ -33,6 +33,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Handled firebase push api check for browser (meant for safari)
 - FCM token to firebase
 - Reminder : Hook up notification & easy cron
+- Dev Banner
+- Hook up with timezone
+- Disable reminder on safari
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json
