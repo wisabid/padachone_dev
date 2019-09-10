@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import Setup from "../Setup/Setup";
 import stepperData from "../Setup/setup-stepper-data.json";
-import { getPDdata, requestNotify } from "../../utils";
+import { getPDdata } from "../../utils";
 import ErrorBoundary from "../Error/ErrorBoundary";
 import CookieConsent from "react-cookie-consent";
 import Messages from "../Messages";
@@ -28,6 +28,7 @@ import {
   useMessageBroadcast
 } from "../../hooks/api-hooks";
 import Newsletters from "../Newsletters";
+import Banner from "../TopBar";
 
 const theme = createMuiTheme({
   palette: {
@@ -283,6 +284,7 @@ function App() {
             <Zoom in={true}>
               <SpecialDay display={display} setdisplay={setdisplay} />
             </Zoom>
+            {window.location.hostname === "dev.padachone.com" && <Banner />}
             {page === "Newsletters" && <Newsletters />}
             {!finished && page === "Setup" && (
               <LandingPage

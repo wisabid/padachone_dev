@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,7 +7,6 @@ import Lab from "../Lab/Lab";
 import { UserContext } from "../../store/context/userContext";
 import { useRenderCounts } from "../../hooks/api-hooks";
 import Reminder from "../Reminder";
-import {addAlert} from '../../utils';
 
 const useStyles = makeStyles({
   card: {
@@ -34,7 +33,7 @@ const Prayer = props => {
   const {
     pdata: { timings, date, meta }
   } = props;
-  const { setPage } = useContext(UserContext);
+  const { setPage, tz } = useContext(UserContext);
   console.table(Object.entries(timings));
   const classes = useStyles();
 
@@ -43,6 +42,7 @@ const Prayer = props => {
   const handleAlpha = () => {
     setAlpha(true);
   };
+  
 
   if (timings) {
       console.log('TIMINGS', timings)
@@ -53,6 +53,9 @@ const Prayer = props => {
             let splitdt = timings[prayer].split(" "),
               justtiming = splitdt[0],
               tzone = splitdt[1];
+              
+              console.log('TIMINGS JUST', justtiming)
+              
             return (
               <Card className={classes.card} key={index}>
                 <CardContent>
@@ -93,7 +96,7 @@ const Prayer = props => {
                     {/* <br />
                                     {`"${date.hijri.weekday.en}"`} */}
                   </Typography>
-                <Reminder addAlert={() => addAlert({prayer, time : justtiming})} />
+                <Reminder prayer={prayer} time={justtiming}/>
 
                 </CardContent>
 
