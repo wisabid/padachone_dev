@@ -319,3 +319,57 @@ export const validateUserTimezone = tz => {
   }
   return false;
 };
+
+
+export const addTestAlert = async ({ prayer, time, tz }) => {
+  return new Promise((resolve, reject) => {
+    const splitForCron = time.split(":");
+    const cronExpression = encodeURIComponent(
+      `${splitForCron[1]} ${splitForCron[0]} * * *`
+    );
+
+    let timezoneFrom = 2;
+    // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
+    if (tz === "Asia/Calcutta") {
+      timezoneFrom = 1;
+    }
+    if (messaging) {
+      // console.log('FCM', await messaging.getToken())
+      messaging.requestPermission().then(async function() {
+        try {
+          const token = await messaging.getToken();
+          fetch(
+            `https://www.easycron.com/rest/add?
+            token=7f8b5800988b8daa158e078123a6f181&
+            cron_expression=${cronExpression}&
+            url=https://fcm.googleapis.com/fcm/send&
+            timezone_from=${timezoneFrom}&timezone=${tz}&
+            cron_job_name=Test-${prayer}-${time}&
+            http_method=POST&
+            custom_timeout=100&
+            http_headers=Authorization%3Akey%3DAAAA3BtrViw%3AAPA91bHwejU0gjRcivKv4nNjfcvply4dS5NkP_OZqQEaDX0LbQFO76J_1Tu9pod_8eGsP_5_bdZoNGNRH4GFAVYcS7UrDH0eE3A83AUW14lKFp_GZE8LVH9ai4-Xz1irPkn0MFPFb7Zu%0AContent-Type%3Aapplication%2Fjson%0Apriority%3Ahigh%0A
+            &posts={"to":"${token}","notification":{"body":"Reminder : This is a test Reminder for time - ${time}.","title":"Padachone.com","click_action":"https://www.padachone.com","icon":"https://www.padachone.com/Padachone-Twitter.png"}}`,
+            {
+              mode: "no-cors",
+              headers: {
+                "Content-Type": "text/html"
+              }
+            }
+          )
+            .then(function(response) {
+              console.log("CRON", response);
+              sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
+              resolve('OK')
+            })
+            .catch(err => {
+              console.log("CRONNNN", err);
+              reject('NOTOK')
+            });
+        } catch (error) {
+          console.log(error);
+          reject('NOTOK')
+        }
+      });
+    }
+  });
+};
