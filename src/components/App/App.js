@@ -28,7 +28,9 @@ import {
   useMessageBroadcast
 } from "../../hooks/api-hooks";
 import Newsletters from "../Newsletters";
+import Notification from "../Notification";
 import Banner from "../TopBar";
+import { messaging } from "../../config/firebase";
 
 const theme = createMuiTheme({
   palette: {
@@ -49,6 +51,7 @@ function App() {
   useRenderCounts("App.js");
   const [msgbroadcast] = useMessageBroadcast();
   // Global State
+  const [notification, setNotification] = useState({})
   const [tz, setTz] = useState("");
   const [page, setPage] = useState("Setup");
   console.log("%c PAGE" + page, "font-size:40px;");
@@ -105,6 +108,13 @@ function App() {
   useEffect(() => {
     // FCM
     // requestNotify(visitor);
+    if (messaging) {
+      navigator.serviceWorker.addEventListener("message", message => {
+        setNotification(message.data)
+        handleNav("setNotifymodal");
+        console.log("MSG : ", message);
+      });
+    }
     window.addEventListener("scroll", hideHdrFtr);
     return () => {
       window.removeEventListener("scroll", hideHdrFtr);
@@ -158,6 +168,8 @@ function App() {
       handleExit();
     } else if (page === "setmodal") {
       setModal({ show: true, name: "Subscribe" });
+    } else if (page === "setNotifymodal") {
+      setModal({ show: true, name: "Notification" });
     } else if (page === "setFTmodal") {
       setModal({ show: true, name: "Finetune" });
     } else if (page === "reset") {
@@ -270,7 +282,9 @@ function App() {
             setForceTrigger: setForceTrigger,
             handleNav: handleNav,
             visitor: visitor,
-            cmsContents: msgbroadcast
+            cmsContents: msgbroadcast,
+            notification : notification,
+            setNotification : setNotification
           }}
         >
           <ErrorBoundary>
@@ -357,6 +371,16 @@ function App() {
                 handlePrimary={modal.handlePrimary}
                 handleSecondary={modal.handleSecondary}
                 modalconfig={modal.modalconfig}
+              />
+            )}
+
+            {modal.show && modal.name === "Notification" && (
+              <Notification
+                modal={modal}
+                setModal={setModal}
+                method={method}
+                school={school}
+                handleForceTrigger={obj => handleForceTrigger(obj)}
               />
             )}
 

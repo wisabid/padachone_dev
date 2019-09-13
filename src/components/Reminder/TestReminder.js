@@ -1,12 +1,3 @@
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Select from "@material-ui/core/Select";
-import lightBlue from "@material-ui/core/colors/lightBlue";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useContext, useEffect, useState } from "react";
 import moment from "moment";
@@ -17,10 +8,8 @@ import { UserContext } from "../../store/context/userContext";
 import DialogModal from "../Modal";
 import { FT_PRAYER } from "../../utils/constants";
 import Button from "@material-ui/core/Button";
-import Icon from "@material-ui/core/Icon";
-import SaveIcon from "@material-ui/icons/Save";
 import AlarmIcon from "@material-ui/icons/Alarm";
-import { addTestAlert, addAlert } from "../../utils";
+import { addTestAlert } from "../../utils";
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -43,11 +32,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TestReminder = props => {
-    const {prayer, time, handleAlert, setModal} = props;
+  const { handleAlert, setModal, setSkip } = props;
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [methods] = useCalcMethods();
-  const { tz, tempdata } = useContext(UserContext);
+  const { tz } = useContext(UserContext);
   const initialState = {
     description:
       "Would you like to see how it works before you set actual ones?",
@@ -72,21 +61,22 @@ const TestReminder = props => {
   }, [methods]);
   const classes = useStyles();
 
-  
-
   const handleSecondary = () => {
-      debugger;
+    debugger;
     // setModalConfig(initialState);
-    setModal({show : false, name : ''});
+    setModal({ show: false, name: "" });
   };
 
-  const handlePrimary = () => {
+  const handlePrimary = event => {
     debugger;
-//   setModalConfig({ ...modalConfig, loading: true });
-  setModal({show : false, name : ''});
-  handleAlert();
-
-};
+    if (event.target.textContent.includes("Skip")) {
+      setSkip(true);
+    } else {
+      //   setModalConfig({ ...modalConfig, loading: true });
+      handleAlert();
+    }
+    setModal({ show: false, name: "" });
+  };
   const setTestReminder = incrementTime => {
     let time = moment()
       .add(incrementTime, "minutes")
@@ -96,7 +86,7 @@ const TestReminder = props => {
       if (res === "OK") {
         console.log("%c OKAY", "font-size:50px;");
         setMsg(time);
-        sessionStorage.setItem(`padachone_testreminder`, `1`);
+        localStorage.setItem(`padachone_testreminder`, `1`);
         setModalConfig({
           ...modalConfig,
           loading: false,
@@ -116,7 +106,7 @@ const TestReminder = props => {
       primaryButton={
         modalConfig.primaryButton ? modalConfig.primaryButton : null
       }
-      handlePrimaryAction={() => handlePrimary()}
+      handlePrimaryAction={handlePrimary}
       secondaryButton={modalConfig.secondaryButton}
       handleSecondaryAction={() => handleSecondary()}
       loading={modalConfig.loading}

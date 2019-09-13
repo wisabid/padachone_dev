@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hook up with timezone
 - Disable reminder on safari
 - Test Alert modal window
+- In App Notification Display Implementation
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json

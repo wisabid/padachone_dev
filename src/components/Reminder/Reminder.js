@@ -1,5 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import lightBlue from '@material-ui/core/colors/lightBlue';
+
 import IconButton from "@material-ui/core/IconButton";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import CheckedIcon from "@material-ui/icons/CheckCircle";
@@ -18,15 +21,20 @@ const useStyles = makeStyles(theme => ({
   },
   input: {
     display: "none"
-  }
+  },
+  progress: {
+    margin: theme.spacing(2),
+    color: lightBlue[500]
+  },
 }));
 
 export default function Reminder({ prayer, time }) {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [skip, setSkip] = useState(false);
   const [modal, setModal] = useState({ show: false, name: "" });
 
-  const { tz, handleNav, setTempdata } = useContext(UserContext);
+  const { tz } = useContext(UserContext);
   const [enableAlarm, setEnableAlarm] = useState(true);
   const [hide, setHide] = useState(false);
   useEffect(() => {
@@ -50,19 +58,31 @@ export default function Reminder({ prayer, time }) {
     }
   }, [time]);
 
+  useEffect(() => {
+    if (skip) {
+      handleAlert();
+    }
+  }, [skip])
+
   const handleAlert = () => {
-    debugger;
-    if (!sessionStorage.getItem(`padachone_testreminder`)) {
+    
+    // call Test reminder screen only when there is no cookie set and if the user has not skipped
+    if (!localStorage.getItem(`padachone_testreminder`) && !skip) {
       // setTempdata([{ prayer, time, tz }]);
       // handleNav("testcron");
       setModal({ show: true, name: "testcron" });
     } else {
+      setLoading(true)
       addAlert({ prayer, time, tz }).then(res => {
         if (res === "OK") {
           console.log("%c OKAY", "font-size:50px;");
           setEnableAlarm(false);
         }
-      });
+      }).finally(() => {
+        setModal({ show: false, name: "" });
+        setLoading(false);
+      })
+      
     }
   };
 
@@ -75,15 +95,13 @@ export default function Reminder({ prayer, time }) {
           color="primary"
           className={classes.button}
           aria-label="add an alarm"
-          onClick={() => setLoading(true)}
         >
           {!enableAlarm ? (
             <CheckedIcon fontSize="default" />
           ) : !hide ? (
             loading ? (
-              <small style={{ fontSize: "12px", fontStyle: "Italic" }}>
-                Scheduling...
-              </small>
+              <CircularProgress className={classes.progress} color="secondary" size="30px"/>
+
             ) : (
               <AlarmIcon
                 onClick={() => {
@@ -96,9 +114,8 @@ export default function Reminder({ prayer, time }) {
         <TestReminder
           modal={modal}
           setModal={setModal}
-          prayer={prayer}
-          time={time}
           handleAlert={handleAlert}
+          setSkip={setSkip}
         />
       </>
     );

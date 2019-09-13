@@ -251,9 +251,10 @@ export const requestNotify = visitor => {
         console.log("Unable to get permission to notify.", err);
       });
 
-    navigator.serviceWorker.addEventListener("message", message =>
-      console.log("MSG : ", message)
-    );
+    navigator.serviceWorker.addEventListener("message", message => {
+      debugger;
+      console.log("MSG : ", message);
+    });
   }
   //FCM Ends here
 };
@@ -296,17 +297,19 @@ export const addAlert = async ({ prayer, time, tz }) => {
             .then(function(response) {
               console.log("CRON", response);
               sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              resolve('OK')
+              resolve("OK");
             })
             .catch(err => {
               console.log("CRONNNN", err);
-              reject('NOTOK')
+              reject("NOTOK");
             });
         } catch (error) {
           console.log(error);
-          reject('NOTOK')
+          reject("NOTOK");
         }
       });
+
+      
     }
   });
 };
@@ -319,7 +322,6 @@ export const validateUserTimezone = tz => {
   }
   return false;
 };
-
 
 export const addTestAlert = async ({ prayer, time, tz }) => {
   return new Promise((resolve, reject) => {
@@ -359,15 +361,15 @@ export const addTestAlert = async ({ prayer, time, tz }) => {
             .then(function(response) {
               console.log("CRON", response);
               sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              resolve('OK')
+              resolve("OK");
             })
             .catch(err => {
               console.log("CRONNNN", err);
-              reject('NOTOK')
+              reject("NOTOK");
             });
         } catch (error) {
           console.log(error);
-          reject('NOTOK')
+          reject("NOTOK");
         }
       });
     }
