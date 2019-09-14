@@ -62,13 +62,11 @@ const TestReminder = props => {
   const classes = useStyles();
 
   const handleSecondary = () => {
-    debugger;
     // setModalConfig(initialState);
     setModal({ show: false, name: "" });
   };
 
   const handlePrimary = event => {
-    debugger;
     if (event.target.textContent.includes("Skip")) {
       setSkip(true);
     } else {

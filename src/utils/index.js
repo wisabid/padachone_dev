@@ -203,7 +203,6 @@ export const addUniqueVisitor = visitor => {
 //   }
 
 export const requestNotify = visitor => {
-  debugger;
   if (messaging) {
     // console.log('FCM', await messaging.getToken())
     messaging
@@ -252,7 +251,6 @@ export const requestNotify = visitor => {
       });
 
     navigator.serviceWorker.addEventListener("message", message => {
-      debugger;
       console.log("MSG : ", message);
     });
   }

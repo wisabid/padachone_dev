@@ -38,9 +38,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Disable reminder on safari
 - Test Alert modal window
 - In App Notification Display Implementation
+- Metadata expansion panel for prayers for showing hijri details
+- Accordion component
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json
+- Hotfix implementation for hiding blank timer display 
+- Newsletter component uses shared Accordion component
 ### CHECKLIST
 - REMOVE DEV while going PROD
 
@@ -58,7 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Prayertime boy is prismic bound
 - emojis are also prismic tied
 - logo is dynamic but with a fallback option
-- resoolved e2e bug by deleting unused webapp.test file
+- resolved e2e bug by deleting unused webapp.test file
 
 ## [2.1.1] - 2019-08-..
 ### Added

@@ -42,7 +42,6 @@ export default function Reminder({ prayer, time }) {
     if (sessionStorage.getItem(`padachone_reminder:${time}`)) {
       setEnableAlarm(false);
     } else {
-      debugger;
       // it should be <, and  > is only for testing
       if (new Date().getHours() < parseInt(time.split(":")[0])) {
         setEnableAlarm(true);
@@ -88,7 +87,9 @@ export default function Reminder({ prayer, time }) {
 
   // Reminder is only available for same timezone
   // Also for Android and chrome only..not for ios safari
-  if (validateUserTimezone(tz) && messaging) {
+  if (validateUserTimezone(tz) && messaging && !hide) {
+    console.log('RRR',validateUserTimezone(tz))
+    console.log('RRR',messaging)
     return (
       <>
         <IconButton

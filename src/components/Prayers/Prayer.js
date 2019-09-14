@@ -84,15 +84,15 @@ const Prayer = props => {
                                     {date.readable} 
                                     <span onClick={handleAlpha}>.</span>
                                     </Typography> */}
-                  <Typography
+                  {/* <Typography
                     variant="body2"
                     component="p"
                     color="textSecondary"
                   >
-                    {date.hijri.month.ar}
+                    {date.hijri.month.ar} */}
                     {/* <br />
                                     {`"${date.hijri.weekday.en}"`} */}
-                  </Typography>
+                  {/* </Typography> */}
                   <Reminder prayer={prayer} time={justtiming} />
                 </CardContent>
 
