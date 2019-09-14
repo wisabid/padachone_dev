@@ -11,6 +11,7 @@ import { getJustPrayers } from "../../utils";
 import { useRenderCounts } from "../../hooks/api-hooks";
 import Accordion from "../Accordion";
 import Metadata from "./Metadata";
+import TodayIcon from '@material-ui/icons/Today';
 
 const useStyles = makeStyles(theme => ({
   progress: {
@@ -61,11 +62,12 @@ const Prayers = props => {
             <Grow in={true}>
               <div>
                 <Accordion
-                  title={prayerdata.date.hijri.month.ar}
+                  title={<TodayIcon />}
                   secondaryTitle="Hijri"
-                  key="{index}"
+                  key="prayermeta"
                   expanded={expanded}
                   setExpanded={setExpanded}
+                  styles={{boxShadow:'none'}}
                 >
                   <div className="metadata-container">
                     <Metadata data={prayerdata} />

@@ -19,7 +19,11 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     // maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    color : 'rgba(0, 0, 0, 0.54)'
+    color : 'rgba(0, 0, 0, 0.54)',
+    // backgroundColor: "rgb(25, 118, 210)",
+    // borderRadius: "5px",
+    // color: "#fff"
+    fontSize : '12px',
   },
   avatar: {
     margin: 10
@@ -27,9 +31,10 @@ const useStyles = makeStyles(theme => ({
   orangeAvatar: {
     margin: 10,
     color: "#fff",
-    backgroundColor: 'rgb(3, 155, 229)',
+    backgroundColor: "#6495ed",
     fontSize: "14px",
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontStyle: "italic"
   }
 }));
 
@@ -38,7 +43,7 @@ const Metadata = ({ data }) => {
 
   return (
     <>
-      <Grid container justify="center" alignItems="center">
+      {/* <Grid container justify="center" alignItems="center">
         <Avatar className={classes.orangeAvatar}>{data.date.hijri.day}</Avatar>{" "}
         -
         <Avatar className={classes.orangeAvatar}>
@@ -46,10 +51,31 @@ const Metadata = ({ data }) => {
         </Avatar>{" "}
         -
         <Avatar className={classes.orangeAvatar}>{data.date.hijri.year}</Avatar>
-        <span style={{fontSize:'10px', color:'rgba(0, 0, 0, 0.54)', fontStyle:'italic'}}>({data.date.hijri.format})</span>
-      </Grid>
+        <span
+          style={{
+            fontSize: "10px",
+            color: "rgba(0, 0, 0, 0.54)",
+            fontStyle: "italic"
+          }}
+        >
+          ({data.date.hijri.format})
+        </span>
+      </Grid> */}
       <List component="nav" className={classes.root} aria-label="contacts">
-       
+        <ListItem button>
+          
+          <ListItemText
+            primary={<>{data.date.hijri.date}<span
+            style={{
+              fontSize: "10px",
+              fontStyle: "italic"
+            }}
+          >
+            ({data.date.hijri.format})
+          </span></>}
+          />
+        </ListItem>
+        <Divider />
         <ListItem button>
           {/* <ListItemIcon>
             <MoonIcon />

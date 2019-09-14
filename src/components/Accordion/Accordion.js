@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Accordion = ({ title, secondaryTitle, keyvalue, children, expanded, setExpanded }) => {
+const Accordion = ({ title, secondaryTitle, keyvalue, children, expanded, setExpanded, styles={} }) => {
   console.log('keyvalue', keyvalue)
   const classes = useStyles();
   console.log('EXP', expanded)
@@ -31,6 +31,7 @@ const Accordion = ({ title, secondaryTitle, keyvalue, children, expanded, setExp
       expanded={expanded === `panel${keyvalue + 1}`}
       onChange={handleChange(`panel${keyvalue + 1}`)}
       key={keyvalue}
+      style={styles}
     >
       <ExpansionPanelSummary
         expandIcon={<ExpandMoreIcon />}
