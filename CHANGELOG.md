@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Appended GCM id in manifest.json
 - Hotfix implementation for hiding blank timer display 
 - Newsletter component uses shared Accordion component
+- Prayer time display rendering style for home screen
 ### CHECKLIST
 - REMOVE DEV while going PROD
 

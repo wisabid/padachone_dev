@@ -6,5 +6,11 @@
     box-shadow: none;
 
 }
+.prayer-card {
+    display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;     
+}
 
   

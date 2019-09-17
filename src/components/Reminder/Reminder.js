@@ -4,8 +4,9 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 
 import IconButton from "@material-ui/core/IconButton";
-import AlarmIcon from "@material-ui/icons/Alarm";
-import CheckedIcon from "@material-ui/icons/CheckCircle";
+import AlarmIcon from "@material-ui/icons/AddAlarm";
+import CheckedIcon from "@material-ui/icons/AlarmOn";
+import AlarmOffIcon from '@material-ui/icons/AlarmOff';
 import { UserContext } from "../../store/context/userContext";
 import { validateUserTimezone } from "../../utils";
 import { addAlert } from "../../utils";
@@ -15,9 +16,10 @@ import TestReminder from "./TestReminder";
 const useStyles = makeStyles(theme => ({
   button: {
     // margin: theme.spacing(1),
-    margin: "5px",
+    // margin: "5px",
     padding: "0",
-    minHeight: "25px"
+    // top:'-20px'
+    // minHeight: "25px"
   },
   input: {
     display: "none"
@@ -121,6 +123,6 @@ export default function Reminder({ prayer, time }) {
       </>
     );
   } else {
-    return null;
+    return <AlarmOffIcon fontSize="default" color="disabled"/>;
   }
 }

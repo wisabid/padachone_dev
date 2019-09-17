@@ -10,7 +10,8 @@ import Reminder from "../Reminder";
 
 const useStyles = makeStyles({
   card: {
-    minWidth: "100%"
+    minWidth: "100%",
+          
   },
   bullet: {
     display: "inline-block",
@@ -57,12 +58,12 @@ const Prayer = props => {
 
             return (
               <Card className={classes.card} key={index}>
-                <CardContent>
+                <CardContent className="prayer-card">
                   <Typography
                     className={classes.title}
                     color="textSecondary"
                     gutterBottom
-                    style={{ fontSize: "17px" }}
+                    style={{ minWidth : '60px', textAlign:'left' }}
                   >
                     {prayer}
                     <span
@@ -84,16 +85,21 @@ const Prayer = props => {
                                     {date.readable} 
                                     <span onClick={handleAlpha}>.</span>
                                     </Typography> */}
-                  {/* <Typography
+                  <div style={{minHeight:'60px'}}>
+                  <Typography
                     variant="body2"
                     component="p"
                     color="textSecondary"
+                    style={{fontSize:'11px'}}
                   >
-                    {date.hijri.month.ar} */}
+                    {tzone} 
                     {/* <br />
-                                    {`"${date.hijri.weekday.en}"`} */}
-                  {/* </Typography> */}
+                                    {`"${date.hijri.weekday.en}"`*/}
+                   </Typography>
+                   <br />
                   <Reminder prayer={prayer} time={justtiming} />
+                  </div>
+                  
                 </CardContent>
 
                 {/* <CardActions className={classes.buttonaction}>

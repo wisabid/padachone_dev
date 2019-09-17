@@ -276,7 +276,7 @@ export const addAlert = async ({ prayer, time, tz }) => {
           const token = await messaging.getToken();
           fetch(
             `https://www.easycron.com/rest/add?
-            token=7f8b5800988b8daa158e078123a6f181&
+            token=ac580f3a4fb58c29f766ed2789f63bff&
             cron_expression=${cronExpression}&
             url=https://fcm.googleapis.com/fcm/send&
             timezone_from=${timezoneFrom}&timezone=${tz}&
@@ -340,7 +340,7 @@ export const addTestAlert = async ({ prayer, time, tz }) => {
           const token = await messaging.getToken();
           fetch(
             `https://www.easycron.com/rest/add?
-            token=7f8b5800988b8daa158e078123a6f181&
+            token=ac580f3a4fb58c29f766ed2789f63bff&
             cron_expression=${cronExpression}&
             url=https://fcm.googleapis.com/fcm/send&
             timezone_from=${timezoneFrom}&timezone=${tz}&
