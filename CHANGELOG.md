@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - In App Notification Display Implementation
 - Metadata expansion panel for prayers for showing hijri details
 - Accordion component
+- hid alarm off for ios
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json

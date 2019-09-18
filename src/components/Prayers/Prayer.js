@@ -85,7 +85,7 @@ const Prayer = props => {
                                     {date.readable} 
                                     <span onClick={handleAlpha}>.</span>
                                     </Typography> */}
-                  <div style={{minHeight:'60px'}}>
+                  <div style={{minHeight:'60px', display:'flex', alignItems:'center', flexDirection:'column', justifyContent:'center'}}>
                   <Typography
                     variant="body2"
                     component="p"
@@ -96,7 +96,6 @@ const Prayer = props => {
                     {/* <br />
                                     {`"${date.hijri.weekday.en}"`*/}
                    </Typography>
-                   <br />
                   <Reminder prayer={prayer} time={justtiming} />
                   </div>
                   

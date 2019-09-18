@@ -122,7 +122,10 @@ export default function Reminder({ prayer, time }) {
         />
       </>
     );
-  } else {
+  } else if (hide && messaging){
     return <AlarmOffIcon fontSize="default" color="disabled"/>;
+  }
+  else {
+    return null
   }
 }
