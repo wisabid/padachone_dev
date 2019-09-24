@@ -56,6 +56,7 @@ const Timer = props => {
     // console.log('expired callback', opts);
     const newmsg = opts.prefix ? opts.prefix.replace("Left", "Time") : "";
     setTimerdisplay(false);
+    setUpcomingPrayers([]); // reset upcoming prayers as part of hot fixing blank timer display
     setTimeout(startTimer, 30000);
   };
   const [dismissMsg, setdismissMsg] = useState(["Dismiss"]);
@@ -73,13 +74,13 @@ const Timer = props => {
     if (timeoptEl) {
       let timeopt = timeoptEl.innerHTML;
       const currTime = timeopt.split(" ")[1];
-    //   const abid = {
-    //     Fajr: "02:59",
-    //     Dhuhr: "04:37",
-    //     Asr: "05:56",
-    //     Maghrib: "06:46",
-    //     Isha: "11:24"
-    //   };
+      //   const abid = {
+      //     Fajr: "02:59",
+      //     Dhuhr: "04:37",
+      //     Asr: "05:56",
+      //     Maghrib: "06:46",
+      //     Isha: "11:24"
+      //   };
       // props.prayers
       const upcomingPs = Object.entries(props.prayers).reduce((all, item) => {
         let firstItemTime = parseInt(item[1].split(":")[0]),
@@ -152,8 +153,6 @@ const Timer = props => {
     }
   }, [upcomingPrayers]);*/
 
-  
-
   useEffect(() => {
     console.log("TIMER USEEFFECT buhahaha");
     let spanEl = document.querySelector(
@@ -165,7 +164,9 @@ const Timer = props => {
         setAnim(() => [angel, anim[1]]);
       }
       setTimeout(() => {
-        setTimerdisplay(true);
+        if (upcomingPrayers.length) { //hotfix for blank timer display after Isha
+          setTimerdisplay(true);
+        }
       }, 60000);
     } else {
       // if (!spanEl) {

@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hotfix implementation for hiding blank timer display 
 - Newsletter component uses shared Accordion component
 - Prayer time display rendering style for home screen
+- Hot fix to rectify blank timer display
 ### CHECKLIST
 - REMOVE DEV while going PROD
 
