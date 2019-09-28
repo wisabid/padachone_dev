@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Metadata expansion panel for prayers for showing hijri details
 - Accordion component
 - hid alarm off for ios
+- api for sending FCM notification and hooked it up with test reminder
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json
@@ -50,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hot fix to rectify blank timer display
 ### CHECKLIST
 - REMOVE DEV while going PROD
+- Reminder.js line # 71
+- utils/index.js : used resolve instead of reject
 
 ## [2.1.3] - 2019-09-04
 ### Changed
