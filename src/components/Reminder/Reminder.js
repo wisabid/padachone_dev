@@ -66,9 +66,8 @@ export default function Reminder({ prayer, time }) {
   }, [skip])
 
   const handleAlert = () => {
-    
     // call Test reminder screen only when there is no cookie set and if the user has not skipped
-    if (!localStorage.getItem(`padachone_testreminderRRR`) && !skip) {
+    if (!localStorage.getItem(`padachone_testreminder`) && !skip) {
       // setTempdata([{ prayer, time, tz }]);
       // handleNav("testcron");
       setModal({ show: true, name: "testcron" });

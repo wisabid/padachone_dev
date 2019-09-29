@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Accordion component
 - hid alarm off for ios
 - api for sending FCM notification and hooked it up with test reminder
+- api call for setting scheduling
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json

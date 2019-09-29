@@ -274,7 +274,35 @@ export const addAlert = async ({ prayer, time, tz }) => {
       messaging.requestPermission().then(async function() {
         try {
           const token = await messaging.getToken();
-          fetch(
+          fetch(`
+            https://www.easycron.com/rest/add?
+            token=ac580f3a4fb58c29f766ed2789f63bff&
+            cron_expression=${cronExpression}&
+            url=https://padachone-dev.herokuapp.com/cron?tz=${tz}****${time}****${prayer}****${token}****1&
+            timezone_from=${timezoneFrom}&timezone=${tz}&
+            cron_job_name=Test-${prayer}-${time}&
+            http_method=GET&
+            custom_timeout=5
+          `,
+          {
+              mode: "no-cors",
+              headers: {
+                "Content-Type": "text/html"
+              }
+            })
+            .then(resp => {
+              console.log("CRON", resp);
+              // sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
+              resolve("OK");
+            })
+            .catch(err => {
+              console.log("CRONNNN", err);
+              resolve("OK"); // ideally it should be NOTOK
+              // reject("NOTOK");
+            });
+
+
+          /*fetch(
             `https://www.easycron.com/rest/add?
             token=ac580f3a4fb58c29f766ed2789f63bff&
             cron_expression=${cronExpression}&
@@ -300,7 +328,7 @@ export const addAlert = async ({ prayer, time, tz }) => {
             .catch(err => {
               console.log("CRONNNN", err);
               reject("NOTOK");
-            });
+            });*/
         } catch (error) {
           console.log(error);
           reject("NOTOK");
@@ -337,6 +365,28 @@ export const addTestAlert = async ({ prayer, time, tz }) => {
         try {
           const token = await messaging.getToken();
           fetch(`
+          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}
+        `,
+        {
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/html"
+          }
+        })
+            .then(resp => {
+              console.log("CRONNNNN", resp);
+              // sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
+              // if (resp === "success") {
+                resolve("OK");
+              // }
+            })
+            .catch(err => {
+              console.log("CRONNNN", err);
+              resolve("OK"); // ideally it should be NOTOK
+              // reject("NOTOK");
+            });
+
+          /*fetch(`
             https://www.easycron.com/rest/add?
             token=ac580f3a4fb58c29f766ed2789f63bff&
             cron_expression=${cronExpression}&
@@ -355,7 +405,7 @@ export const addTestAlert = async ({ prayer, time, tz }) => {
               console.log("CRONNNN", err);
               resolve("OK"); // ideally it should be NOTOK
               // reject("NOTOK");
-            });
+            });*/
           /*fetch(
             `https://www.easycron.com/rest/add?
             token=ac580f3a4fb58c29f766ed2789f63bff&
