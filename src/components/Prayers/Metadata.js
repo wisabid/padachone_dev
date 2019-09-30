@@ -1,29 +1,24 @@
 import React from "react";
-import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import StarIcon from "@material-ui/icons/Star";
-import MoonIcon from "@material-ui/icons/Brightness3";
 
-import { deepOrange, deepPurple } from "@material-ui/core/colors";
+import Colorblock from "./Colorblock";
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: "100%",
     // maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    color : 'rgba(0, 0, 0, 0.54)',
+    color: "rgba(0, 0, 0, 0.54)",
     // backgroundColor: "rgb(25, 118, 210)",
     // borderRadius: "5px",
     // color: "#fff"
-    fontSize : '12px',
+    fontSize: "12px"
   },
   avatar: {
     margin: 10
@@ -61,22 +56,29 @@ const Metadata = ({ data }) => {
           ({data.date.hijri.format})
         </span>
       </Grid> */}
-      <List component="nav" className={classes.root} aria-label="contacts">
+      <List component="nav" className={classes.root} aria-label="Hijri Details">
         <ListItem button>
-          
+          <Colorblock wide="20px"/>
           <ListItemText
-            primary={<>{data.date.hijri.date}<span
-            style={{
-              fontSize: "10px",
-              fontStyle: "italic"
-            }}
-          >
-            ({data.date.hijri.format})
-          </span></>}
+            primary={
+              <>
+                {data.date.hijri.date}
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontStyle: "italic"
+                  }}
+                >
+                  ({data.date.hijri.format})
+                </span>
+              </>
+            }
           />
         </ListItem>
         <Divider />
         <ListItem button>
+          <Colorblock wide="30px"/>
+
           {/* <ListItemIcon>
             <MoonIcon />
           </ListItemIcon> */}
@@ -87,6 +89,8 @@ const Metadata = ({ data }) => {
         <Divider />
 
         <ListItem button alignItems="center">
+          <Colorblock wide="40px"/>
+
           <ListItemText
             primary={`${data.date.hijri.month.ar} (month : ${data.date.hijri.month.en})`}
           />
@@ -95,6 +99,8 @@ const Metadata = ({ data }) => {
         <Divider />
 
         <ListItem button alignItems="center">
+          <Colorblock wide="50px"/>
+
           <ListItemText
             primary={`${data.date.hijri.designation.expanded} (${data.date.hijri.designation.abbreviated})`}
           />

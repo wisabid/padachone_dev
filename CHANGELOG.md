@@ -43,6 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - hid alarm off for ios
 - api for sending FCM notification and hooked it up with test reminder
 - api call for setting scheduling
+- Color block for hijri meta data
+
 ### Changed
 - gitignore
 - Appended GCM id in manifest.json
@@ -50,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Newsletter component uses shared Accordion component
 - Prayer time display rendering style for home screen
 - Hot fix to rectify blank timer display
+- display either timezone or reminder
+- restrict reminder for just prayers
 ### CHECKLIST
 - REMOVE DEV while going PROD
 - Reminder.js line # 71

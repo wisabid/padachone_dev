@@ -102,7 +102,7 @@ export default function Reminder({ prayer, time }) {
             <CheckedIcon fontSize="default" />
           ) : !hide ? (
             loading ? (
-              <CircularProgress className={classes.progress} color="secondary" size="30px"/>
+              <CircularProgress className={classes.progress} color="secondary" size="20px"/>
 
             ) : (
               <AlarmIcon

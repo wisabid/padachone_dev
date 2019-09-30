@@ -44,7 +44,7 @@ const Prayers = props => {
   console.log("PDATA", prayerdata);
   const classes = useStyles();
   // useEffect(() => {
-  //     if (prayerdata && Object.keys(prayerdata).length) {
+  //     if (prayerdata< && Object.keys(prayerdata).length) {
   //         //localStorage.setItem()
   //         //throw new Error('Uncaught');
   //     }
@@ -74,7 +74,7 @@ const Prayers = props => {
                     {/* {JSON.stringify(prayerdata.date.hijri)} */}
                   </div>
                 </Accordion>
-                <Prayer pdata={prayerdata} />
+                <Prayer pdata={prayerdata} justPrayers={onlyPrayers}/>
               </div>
             </Grow>
           </>

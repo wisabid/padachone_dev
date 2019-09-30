@@ -292,7 +292,7 @@ export const addAlert = async ({ prayer, time, tz }) => {
             })
             .then(resp => {
               console.log("CRON", resp);
-              // sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
+              sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
               resolve("OK");
             })
             .catch(err => {

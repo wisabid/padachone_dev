@@ -7,11 +7,12 @@ import Lab from "../Lab/Lab";
 import { UserContext } from "../../store/context/userContext";
 import { useRenderCounts } from "../../hooks/api-hooks";
 import Reminder from "../Reminder";
+import { messaging } from "../../config/firebase";
+
 
 const useStyles = makeStyles({
   card: {
-    minWidth: "100%",
-          
+    minWidth: "100%"
   },
   bullet: {
     display: "inline-block",
@@ -32,14 +33,17 @@ const useStyles = makeStyles({
 const Prayer = props => {
   useRenderCounts("Prayer.js");
   const {
-    pdata: { timings, date, meta }
+    pdata: { timings, date, meta },
+    justPrayers
   } = props;
   const { setPage, tz } = useContext(UserContext);
   console.table(Object.entries(timings));
   const classes = useStyles();
 
   const [alpha, setAlpha] = React.useState(false);
-
+  useEffect(() => {
+    console.log("ALF", justPrayers);
+  }, [justPrayers]);
   const handleAlpha = () => {
     setAlpha(true);
   };
@@ -63,7 +67,7 @@ const Prayer = props => {
                     className={classes.title}
                     color="textSecondary"
                     gutterBottom
-                    style={{ minWidth : '60px', textAlign:'left' }}
+                    style={{ minWidth: "60px", textAlign: "left" }}
                   >
                     {prayer}
                     <span
@@ -85,20 +89,32 @@ const Prayer = props => {
                                     {date.readable} 
                                     <span onClick={handleAlpha}>.</span>
                                     </Typography> */}
-                  <div style={{minHeight:'60px', display:'flex', alignItems:'center', flexDirection:'column', justifyContent:'center'}}>
-                  <Typography
-                    variant="body2"
-                    component="p"
-                    color="textSecondary"
-                    style={{fontSize:'11px'}}
+                  <div
+                    style={{
+                      minHeight: "60px",
+                      minWidth:"55px",
+                      display: "flex",
+                      alignItems: "flex-end",
+                      flexDirection: "column",
+                      justifyContent: "center"
+                    }}
                   >
-                    {tzone} 
-                    {/* <br />
+                    
+                    {(justPrayers.hasOwnProperty(prayer) && messaging) ? (
+                      <Reminder prayer={prayer} time={justtiming} />
+                    ) : (
+                      <Typography
+                        variant="body2"
+                        component="p"
+                        color="textSecondary"
+                        style={{ fontSize: "11px" }}
+                      >
+                        {tzone}
+                        {/* <br />
                                     {`"${date.hijri.weekday.en}"`*/}
-                   </Typography>
-                  <Reminder prayer={prayer} time={justtiming} />
+                      </Typography>
+                    )}
                   </div>
-                  
                 </CardContent>
 
                 {/* <CardActions className={classes.buttonaction}>
