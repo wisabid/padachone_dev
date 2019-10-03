@@ -124,10 +124,10 @@ const TestReminder = props => {
               size="small"
               className={classes.button}
               color="primary"
-              onClick={() => setTestReminder(1)}
+              onClick={() => setTestReminder(2)}
             >
               <AlarmIcon className={classes.leftIcon} />
-              Remind me in 1 min
+              Remind me in 2 min
             </Button>
             <Button
               variant="contained"

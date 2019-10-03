@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hot fix to rectify blank timer display
 - display either timezone or reminder
 - restrict reminder for just prayers
+- changed 1 min test reminder to 2 min reminder
 ### CHECKLIST
 - REMOVE DEV while going PROD
 - Reminder.js line # 71
