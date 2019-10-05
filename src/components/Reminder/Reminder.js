@@ -36,7 +36,7 @@ export default function Reminder({ prayer, time }) {
   const [skip, setSkip] = useState(false);
   const [modal, setModal] = useState({ show: false, name: "" });
 
-  const { tz } = useContext(UserContext);
+  const { tz, visitor } = useContext(UserContext);
   const [enableAlarm, setEnableAlarm] = useState(true);
   const [hide, setHide] = useState(false);
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function Reminder({ prayer, time }) {
       setModal({ show: true, name: "testcron" });
     } else {
       setLoading(true)
-      addAlert({ prayer, time, tz }).then(res => {
+      addAlert({ prayer, time, tz, visitor }).then(res => {
         if (res === "OK") {
           console.log("%c OKAY", "font-size:50px;");
           setEnableAlarm(false);

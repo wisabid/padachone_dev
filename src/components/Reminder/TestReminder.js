@@ -36,7 +36,7 @@ const TestReminder = props => {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
   const [methods] = useCalcMethods();
-  const { tz } = useContext(UserContext);
+  const { tz, visitor } = useContext(UserContext);
   const initialState = {
     description:
       "Would you like to see how it works before you set actual ones?",
@@ -80,20 +80,32 @@ const TestReminder = props => {
       .add(incrementTime, "minutes")
       .format("HH:mm");
     setModalConfig({ ...modalConfig, loading: true });
-    addTestAlert({ prayer: "testRem", time, tz }).then(res => {
-      if (res === "OK") {
-        console.log("%c OKAY", "font-size:50px;");
-        setMsg(time);
-        localStorage.setItem(`padachone_testreminder`, `1`);
+    addTestAlert({ prayer: "testRem", time, tz, visitor })
+      .then(res => {
+        if (res === "OK") {
+          console.log("%c OKAY", "font-size:50px;");
+          setMsg(time);
+          localStorage.setItem(`padachone_testreminder`, `1`);
+          setModalConfig({
+            ...modalConfig,
+            loading: false,
+            description:
+              "Feel free to exit application and wait for the reminder.",
+            primaryButton: "Continue"
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err.message);
         setModalConfig({
           ...modalConfig,
-          loading: false,
           description:
-            "Feel free to exit application and wait for the reminder.",
-          primaryButton: "Continue"
+            "We are experiencing some issues. Please try after sometime.",
+          secondaryButton: "Ok",
+          primaryButton: "",
+          error: true
         });
-      }
-    });
+      });
   };
   return (
     <DialogModal

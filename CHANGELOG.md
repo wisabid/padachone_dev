@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - api for sending FCM notification and hooked it up with test reminder
 - api call for setting scheduling
 - Color block for hijri meta data
+- Twilio Integration for logging
 
 ### Changed
 - gitignore
@@ -59,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - REMOVE DEV while going PROD
 - Reminder.js line # 71
 - utils/index.js : used resolve instead of reject
+- visitor logging & reminder logging
 
 ## [2.1.3] - 2019-09-04
 ### Changed

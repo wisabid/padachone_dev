@@ -257,50 +257,68 @@ export const requestNotify = visitor => {
   //FCM Ends here
 };
 
-export const addAlert = async ({ prayer, time, tz }) => {
+// checks if user selected timezone is actually users timezone or not
+export const validateUserTimezone = tz => {
+  const userTimezone = moment.tz.guess();
+  if (userTimezone === tz) {
+    return true;
+  }
+  return false;
+};
+
+export const addAlert = async ({ prayer, time, tz, visitor }) => {
   return new Promise((resolve, reject) => {
     const splitForCron = time.split(":");
     const cronExpression = encodeURIComponent(
       `${splitForCron[1]} ${splitForCron[0]} * * *`
     );
 
-    let timezoneFrom = 2;
-    // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
-    if (tz === "Asia/Calcutta") {
-      timezoneFrom = 1;
-    }
+    // let timezoneFrom = 2;
+    // // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
+    // if (tz === "Asia/Calcutta") {
+    //   timezoneFrom = 1;
+    // }
     if (messaging) {
       // console.log('FCM', await messaging.getToken())
       messaging.requestPermission().then(async function() {
         try {
           const token = await messaging.getToken();
-          fetch(`
-            https://www.easycron.com/rest/add?
-            token=ac580f3a4fb58c29f766ed2789f63bff&
-            cron_expression=${cronExpression}&
-            url=https://padachone-dev.herokuapp.com/cron?tz=${tz}****${time}****${prayer}****${token}****1&
-            timezone_from=${timezoneFrom}&timezone=${tz}&
-            cron_job_name=Test-${prayer}-${time}&
-            http_method=GET&
-            custom_timeout=5
-          `,
-          {
-              mode: "no-cors",
-              headers: {
-                "Content-Type": "text/html"
-              }
-            })
-            .then(resp => {
-              console.log("CRON", resp);
-              sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              resolve("OK");
-            })
-            .catch(err => {
-              console.log("CRONNNN", err);
-              resolve("OK"); // ideally it should be NOTOK
-              // reject("NOTOK");
-            });
-
+          const result = await fetch(`
+          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&real_reminder=1&city=${visitor.city}&postal=${visitor.postal}
+        `);
+          const response = await result.json();
+          debugger; 
+          console.log(response);
+          sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
+          resolve("OK");
+          // fetch(
+          //   `
+          //   https://www.easycron.com/rest/add?
+          //   token=ac580f3a4fb58c29f766ed2789f63bff&
+          //   cron_expression=${cronExpression}&
+          //   url=https://padachone-dev.herokuapp.com/cron?tz=${tz}****${time}****${prayer}****${token}****1&
+          //   timezone_from=${timezoneFrom}&timezone=${tz}&
+          //   cron_job_name=Test-${prayer}-${time}&
+          //   http_method=GET&
+          //   custom_timeout=5
+          // `,
+          //   {
+          //     mode: "no-cors",
+          //     headers: {
+          //       "Content-Type": "text/html"
+          //     }
+          //   }
+          // )
+          //   .then(resp => {
+          //     console.log("CRON", resp);
+          //     sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
+          //     resolve("OK");
+          //   })
+          //   .catch(err => {
+          //     console.log("CRONNNN", err);
+          //     resolve("OK"); // ideally it should be NOTOK
+          //     // reject("NOTOK");
+          //   });
 
           /*fetch(
             `https://www.easycron.com/rest/add?
@@ -338,53 +356,30 @@ export const addAlert = async ({ prayer, time, tz }) => {
   });
 };
 
-// checks if user selected timezone is actually users timezone or not
-export const validateUserTimezone = tz => {
-  const userTimezone = moment.tz.guess();
-  if (userTimezone === tz) {
-    return true;
-  }
-  return false;
-};
-
-export const addTestAlert = async ({ prayer, time, tz }) => {
+export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
   return new Promise((resolve, reject) => {
     const splitForCron = time.split(":");
     const cronExpression = encodeURIComponent(
       `${splitForCron[1]} ${splitForCron[0]} * * *`
     );
 
-    let timezoneFrom = 2;
-    // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
-    if (tz === "Asia/Calcutta") {
-      timezoneFrom = 1;
-    }
+    // let timezoneFrom = 2;
+    // // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
+    // if (tz === "Asia/Calcutta") {
+    //   timezoneFrom = 1;
+    // }
     if (messaging) {
       // console.log('FCM', await messaging.getToken())
       messaging.requestPermission().then(async function() {
         try {
           const token = await messaging.getToken();
-          fetch(`
-          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}
-        `,
-        {
-          mode: "no-cors",
-          headers: {
-            "Content-Type": "text/html"
-          }
-        })
-            .then(resp => {
-              console.log("CRONNNNN", resp);
-              // sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              // if (resp === "success") {
-                resolve("OK");
-              // }
-            })
-            .catch(err => {
-              console.log("CRONNNN", err);
-              resolve("OK"); // ideally it should be NOTOK
-              // reject("NOTOK");
-            });
+          const result = await fetch(`
+          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&city=${visitor.city}&postal=${visitor.postal}
+        `);
+          const response = await result.json();
+          debugger;
+          console.log(response);
+          resolve("OK");
 
           /*fetch(`
             https://www.easycron.com/rest/add?
