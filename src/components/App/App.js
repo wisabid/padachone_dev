@@ -31,7 +31,6 @@ import Newsletters from "../Newsletters";
 import Notification from "../Notification";
 import Banner from "../TopBar";
 import { messaging } from "../../config/firebase";
-
 const theme = createMuiTheme({
   palette: {
     primary: lightBlue,
@@ -49,6 +48,10 @@ const theme = createMuiTheme({
 });
 function App() {
   useRenderCounts("App.js");
+  // Web worker part
+  const [worker, setWorker] = useState({});
+  const [workerData, setWorkerData] = useState({});
+  // Web worker part ends here 
   const [msgbroadcast] = useMessageBroadcast();
   // Global State
   const [notification, setNotification] = useState({})
@@ -106,6 +109,13 @@ function App() {
   };
 
   useEffect(() => {
+    // Web Worker
+    const padachoneWorker = new Worker('padachone.worker.js');
+    setWorker(padachoneWorker);
+    padachoneWorker.addEventListener('message', (e) => {
+      console.log(`WORKER: You have a message from worker ${e.data.msg}`)
+      setWorkerData({worker_data : e.data});
+    })
     // FCM
     // requestNotify(visitor);
     if (messaging) {
@@ -284,7 +294,9 @@ function App() {
             visitor: visitor,
             cmsContents: msgbroadcast,
             notification : notification,
-            setNotification : setNotification
+            setNotification : setNotification,
+            worker: worker,
+            workerData : workerData
           }}
         >
           <ErrorBoundary>

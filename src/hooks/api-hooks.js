@@ -10,7 +10,8 @@ import gql from "graphql-tag";
 import {
   getPDdata,
   getMonthYearNumber,
-  addUniqueVisitor
+  addUniqueVisitor,
+  loggerUtil
 } from "../utils/index";
 import {
   BING_API,
@@ -258,6 +259,7 @@ export const useForceTrigger = ({
 
 export const useVisitorDetails = dte => {
   const [visitordata, setVisitordata] = useState({});
+  
   // const API = `https://api.ipstack.com/check?access_key=${IPSTACK_API}`;
   const API = `https://geoip-db.com/json/`;
   const getVisitorDetails = async () => {
@@ -281,14 +283,15 @@ export const useVisitorDetails = dte => {
       );
       addUniqueVisitor(data);
       // Whatsapp Logger
-      (async function() {
-        const result = await fetch(
-            `https://padachone-dev.herokuapp.com/whatsapp?msg=***A new user from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`
-          );
-        const respnse = await result.json();
-        console.log(respnse);
-      })()
-      
+      loggerUtil(`***A new user from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`);
+
+      // (async function() {
+      //   const result = await fetch(
+      //     `https://padachone-dev.herokuapp.com/whatsapp?msg=***A new user from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`
+      //   );
+      //   const respnse = await result.json();
+      //   console.log(respnse);
+      // })();
     }
     setVisitordata(data);
   };
@@ -464,4 +467,25 @@ export const useSiteTitle = ({ docname, options }) => {
       });
   }, [cmsContents]);
   return sitetitle;
+};
+
+export const useWhatsapplogger = ({ user, comp, action = "idle", msg }) => {
+  const { worker, visitor } = useContext(UserContext);
+  const [logs, setLogs] = useState({});
+  const nudgeWorker = () => {
+    debugger;
+    const msgPrefix = `User - **** from ${visitor.city} (${visitor.postal}) `;
+    const suffix = ` at ${window.location.hostname}`
+    worker.postMessage({
+      type : 'logger',
+      msg : {...logs, message : `${msgPrefix}${logs.message}${suffix}`}
+    });
+    setLogs({})
+  }
+  useEffect(() => {
+    if (logs.hasOwnProperty('action') && worker instanceof Worker) {
+      nudgeWorker();
+    }
+  }, [logs]);
+  return [logs, setLogs]
 };

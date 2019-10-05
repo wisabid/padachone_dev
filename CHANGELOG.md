@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - api call for setting scheduling
 - Color block for hijri meta data
 - Twilio Integration for logging
+- Whatsapp logger custom hook & implemented in all important events
 
 ### Changed
 - gitignore

@@ -58,7 +58,7 @@ const Metadata = ({ data }) => {
       </Grid> */}
       <List component="nav" className={classes.root} aria-label="Hijri Details">
         <ListItem button>
-          <Colorblock wide="20px"/>
+          <Colorblock wide="20px" />
           <ListItemText
             primary={
               <>
@@ -77,7 +77,7 @@ const Metadata = ({ data }) => {
         </ListItem>
         <Divider />
         <ListItem button>
-          <Colorblock wide="30px"/>
+          <Colorblock wide="30px" />
 
           {/* <ListItemIcon>
             <MoonIcon />
@@ -89,7 +89,7 @@ const Metadata = ({ data }) => {
         <Divider />
 
         <ListItem button alignItems="center">
-          <Colorblock wide="40px"/>
+          <Colorblock wide="40px" />
 
           <ListItemText
             primary={`${data.date.hijri.month.ar} (month : ${data.date.hijri.month.en})`}
@@ -99,7 +99,7 @@ const Metadata = ({ data }) => {
         <Divider />
 
         <ListItem button alignItems="center">
-          <Colorblock wide="50px"/>
+          <Colorblock wide="50px" />
 
           <ListItemText
             primary={`${data.date.hijri.designation.expanded} (${data.date.hijri.designation.abbreviated})`}

@@ -250,9 +250,9 @@ export const requestNotify = visitor => {
         console.log("Unable to get permission to notify.", err);
       });
 
-    navigator.serviceWorker.addEventListener("message", message => {
-      console.log("MSG : ", message);
-    });
+    // navigator.serviceWorker.addEventListener("message", message => {
+    //   console.log("MSG : ", message);
+    // });
   }
   //FCM Ends here
 };
@@ -436,3 +436,11 @@ export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
     }
   });
 };
+
+export const loggerUtil = async (msg) => {
+    const result = await fetch(
+      `https://padachone-dev.herokuapp.com/whatsapp?msg=${msg}`
+    );
+    const respnse = await result.json();
+    console.log(respnse);
+}
