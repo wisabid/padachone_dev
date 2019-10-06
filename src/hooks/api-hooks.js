@@ -11,7 +11,9 @@ import {
   getPDdata,
   getMonthYearNumber,
   addUniqueVisitor,
-  loggerUtil
+  loggerUtil,
+  getUserCredentials,
+  addUniqueUser
 } from "../utils/index";
 import {
   BING_API,
@@ -259,7 +261,7 @@ export const useForceTrigger = ({
 
 export const useVisitorDetails = dte => {
   const [visitordata, setVisitordata] = useState({});
-  
+
   // const API = `https://api.ipstack.com/check?access_key=${IPSTACK_API}`;
   const API = `https://geoip-db.com/json/`;
   const getVisitorDetails = async () => {
@@ -283,7 +285,9 @@ export const useVisitorDetails = dte => {
       );
       addUniqueVisitor(data);
       // Whatsapp Logger
-      loggerUtil(`***A new user from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`);
+      loggerUtil(
+        `❤️ The user - ${localStorage.getItem('padachone_username')} from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`
+      );
 
       // (async function() {
       //   const result = await fetch(
@@ -296,6 +300,13 @@ export const useVisitorDetails = dte => {
     setVisitordata(data);
   };
   useEffect(() => {
+    // Set username
+    setVisitordata(() => {
+      let {username, token } = getUserCredentials();
+      addUniqueUser({username, token});
+      return { ...visitordata, username, token }
+    });
+
     if (sessionStorage.getItem(`padachone_visitordata:${dte}`)) {
       setVisitordata(
         JSON.parse(sessionStorage.getItem(`padachone_visitordata:${dte}`))
@@ -305,7 +316,7 @@ export const useVisitorDetails = dte => {
     }
   }, []);
 
-  return visitordata;
+  return {...visitordata, username: localStorage.getItem('padachone_username')};
 };
 
 export const useMessageBroadcast = () => {
@@ -474,18 +485,18 @@ export const useWhatsapplogger = ({ user, comp, action = "idle", msg }) => {
   const [logs, setLogs] = useState({});
   const nudgeWorker = () => {
     debugger;
-    const msgPrefix = `User - **** from ${visitor.city} (${visitor.postal}) `;
-    const suffix = ` at ${window.location.hostname}`
+    const msgPrefix = `User - ${visitor.username} from ${visitor.city} (${visitor.postal}) `;
+    const suffix = ` at ${window.location.hostname}`;
     worker.postMessage({
-      type : 'logger',
-      msg : {...logs, message : `${msgPrefix}${logs.message}${suffix}`}
+      type: "logger",
+      msg: { ...logs, message: `${msgPrefix}${logs.message}${suffix}` }
     });
-    setLogs({})
-  }
+    setLogs({});
+  };
   useEffect(() => {
-    if (logs.hasOwnProperty('action') && worker instanceof Worker) {
+    if (logs.hasOwnProperty("action") && worker instanceof Worker) {
       nudgeWorker();
     }
   }, [logs]);
-  return [logs, setLogs]
+  return [logs, setLogs];
 };

@@ -46,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Color block for hijri meta data
 - Twilio Integration for logging
 - Whatsapp logger custom hook & implemented in all important events
+- A unique username generated for all users in addition to hooking up with logger and firebase
 
 ### Changed
 - gitignore

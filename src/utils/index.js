@@ -3,7 +3,7 @@ import moment from "moment";
 import { PRAYERS_ARR } from "./constants";
 import { db } from "../config/firebase";
 import { messaging } from "../config/firebase";
-
+import Chance from "chance";
 // import firebase from 'firebase';
 
 export const getPDdata = type => {
@@ -163,6 +163,7 @@ export const addUniqueVisitor = visitor => {
         } else {
           db.collection("visitors")
             .add({
+              user: localStorage.getItem("padachone_username"),
               data: visitor,
               date: dt,
               host: window.location.hostname,
@@ -284,10 +285,10 @@ export const addAlert = async ({ prayer, time, tz, visitor }) => {
         try {
           const token = await messaging.getToken();
           const result = await fetch(`
-          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&real_reminder=1&city=${visitor.city}&postal=${visitor.postal}
+          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&real_reminder=1&city=${visitor.city}&postal=${visitor.postal}&user=${visitor.username}
         `);
           const response = await result.json();
-          debugger; 
+          debugger;
           console.log(response);
           sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
           resolve("OK");
@@ -374,7 +375,7 @@ export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
         try {
           const token = await messaging.getToken();
           const result = await fetch(`
-          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&city=${visitor.city}&postal=${visitor.postal}
+          https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&city=${visitor.city}&postal=${visitor.postal}&user=${visitor.username}
         `);
           const response = await result.json();
           debugger;
@@ -437,10 +438,82 @@ export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
   });
 };
 
-export const loggerUtil = async (msg) => {
-    const result = await fetch(
-      `https://padachone-dev.herokuapp.com/whatsapp?msg=${msg}`
-    );
-    const respnse = await result.json();
-    console.log(respnse);
-}
+export const loggerUtil = async msg => {
+  const suffix = ` at ${window.location.hostname}`;
+  const result = await fetch(
+    `https://padachone-dev.herokuapp.com/whatsapp?msg=${msg}${suffix}`
+  );
+  const respnse = await result.json();
+  console.log(respnse);
+};
+
+export const getUserCredentials = () => {
+  if (localStorage.getItem(`padachone_username`) && localStorage.getItem(`padachone_token`)) {
+    return {
+      username : localStorage.getItem(`padachone_username`),
+      token : localStorage.getItem(`padachone_token`)
+    }
+  }
+
+  // Instantiate Chance so it can be used
+  let chance = new Chance();
+  // Use Chance here.
+  let username = chance
+    .name()
+    .toLowerCase()
+    .replace(" ", "_");
+  let token = chance.guid({ version: 5 });
+
+  localStorage.setItem(`padachone_username`, username);
+  localStorage.setItem(`padachone_token`, token);
+  return {
+    username,
+    token
+  };
+};
+
+export const addUniqueUser = ({ username, token }) => {
+  try {
+    // const dt = getPDdata();
+    db.collection("users")
+      .where("username", "==", username)
+      // .where("data.IPv4", "==", visitor.IPv4)
+      // .where("host", "==", window.location.hostname)
+      .get()
+      .then(querySnapshot => {
+        const data = querySnapshot.docs.map(doc => doc.data());
+        console.log("DB : ", data); // array of cities objects
+        if (data.length) {
+          console.log("User already exists");
+          return;
+        } else {
+          db.collection("users")
+            .add({
+              username,
+              password: token,
+              host: window.location.hostname,
+              timestamp: new Date()
+            })
+            .then(() => {
+              console.log("Successfully updated User data");
+               // Whatsapp Logger
+              loggerUtil(
+                `💩A new user - ${username} has just logged in at ${window.location.hostname}...`
+              );
+              return;
+            })
+            .catch(err => {
+              console.log(err);
+              return;
+            });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return;
+      });
+  } catch (err) {
+    debugger;
+    console.error(err);
+  }
+};
