@@ -34,19 +34,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-
-
 const Finetune = props => {
   // All you need for loggin
   // Whatsapp Logger
   const [log, setLogs] = useWhatsapplogger({});
   const [methods] = useCalcMethods();
-  const { setForceTrigger, setModal } = useContext(
-    UserContext
-  );
+  const { setForceTrigger, setModal } = useContext(UserContext);
 
-  
-  
   const initialState = {
     description:
       "Would you like to alter your current settings for better accurate results?",
@@ -75,7 +69,7 @@ const Finetune = props => {
     setCalcMethod(Number(event.target.value));
     // Whatsapp Logger
     setLogs({
-      action: "Fine tune Calc Method",
+      action: "Finetune Calc Method",
       message: `just altered method drop down`
     });
   };
@@ -85,7 +79,7 @@ const Finetune = props => {
     setSchoolVal(parseInt(event.target.value));
     // WHatsapp logger
     setLogs({
-      action: "Fine tune School",
+      action: "Finetune School",
       message: `just altered school rad to ${event.target.value}`
     });
   }
@@ -94,13 +88,13 @@ const Finetune = props => {
     setModalConfig({ ...modalConfig, loading: true });
     localStorage.setItem("padachone:method", calcMethod);
     localStorage.setItem("padachone:school", schoolVal);
-    
+
     props.handleForceTrigger({
       target: FT_PRAYER,
       method: calcMethod,
       school: schoolVal
     });
-    
+
     // setForceTrigger(() => {
     //   return {target: FT_PRAYER, method : calcMethod, school : schoolVal}
     // });
@@ -137,10 +131,6 @@ const Finetune = props => {
               onChange={handleChange("age")}
               input={<Input id="age-simple" />}
             >
-              {/* <MenuItem key="none" value="">
-                      <em>None</em>
-                      </MenuItem> */}
-              {/* {methods.hasOwnProperty('data') && methods.data.length && <DDitems methods={methods.data}/>} */}
               {methods.data.map((item, indx) => {
                 let objVal = Object.values(item)[0],
                   objKey = Object.keys(item)[0];
@@ -150,9 +140,6 @@ const Finetune = props => {
                   </MenuItem>
                 );
               })}
-              {/* <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem> */}
             </Select>
           </FormControl>
 
@@ -177,14 +164,6 @@ const Finetune = props => {
                 label="Hanafi"
                 labelPlacement="start"
               />
-
-              {/* <FormControlLabel
-                        value="disabled"
-                        disabled
-                        control={<Radio />}
-                        label="(Disabled option)"
-                        labelPlacement="start"
-                      /> */}
             </RadioGroup>
           </FormControl>
         </div>

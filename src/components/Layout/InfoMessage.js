@@ -24,7 +24,7 @@ function MyApp({message}) {
 
 export default function IntegrationNotistack({message}) {
   return (
-    <SnackbarProvider maxSnack={3}>
+    <SnackbarProvider maxSnack={1}>
       <MyApp message={message}/>
     </SnackbarProvider>
   );

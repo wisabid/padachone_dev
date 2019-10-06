@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - to do : testing & end to end testing using puppeteer
 - to do : skeletons using material ui
 - to do : make text and bg color dynamic with prismic
+- to do : JWT for api & protect routes
 
 ## [2.2.0] - 2019-09-..
 ### Added
@@ -47,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Twilio Integration for logging
 - Whatsapp logger custom hook & implemented in all important events
 - A unique username generated for all users in addition to hooking up with logger and firebase
+- EMojis in whatsapp logger
 
 ### Changed
 - gitignore
@@ -58,6 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - display either timezone or reminder
 - restrict reminder for just prayers
 - changed 1 min test reminder to 2 min reminder
+- Max stackbar is limited to 1 in infomessage of travel
 ### CHECKLIST
 - REMOVE DEV while going PROD
 - Reminder.js line # 71

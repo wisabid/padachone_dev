@@ -261,6 +261,7 @@ export const useForceTrigger = ({
 
 export const useVisitorDetails = dte => {
   const [visitordata, setVisitordata] = useState({});
+  const { worker } = useContext(UserContext);
 
   // const API = `https://api.ipstack.com/check?access_key=${IPSTACK_API}`;
   const API = `https://geoip-db.com/json/`;
@@ -285,26 +286,23 @@ export const useVisitorDetails = dte => {
       );
       addUniqueVisitor(data);
       // Whatsapp Logger
-      loggerUtil(
-        `❤️ The user - ${localStorage.getItem('padachone_username')} from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`
-      );
 
-      // (async function() {
-      //   const result = await fetch(
-      //     `https://padachone-dev.herokuapp.com/whatsapp?msg=***A new user from ${data.city} (${data.postal}) has just logged in at ${window.location.hostname}...`
-      //   );
-      //   const respnse = await result.json();
-      //   console.log(respnse);
-      // })();
+      loggerUtil({
+        msg: `❤️${localStorage.getItem(
+          "padachone_username"
+        )}❤️ : Hi there! 👋 I'm from ${data.city} (${
+          data.postal
+        })..Wazz up!..just logged in`
+      });
     }
     setVisitordata(data);
   };
   useEffect(() => {
     // Set username
     setVisitordata(() => {
-      let {username, token } = getUserCredentials();
-      addUniqueUser({username, token});
-      return { ...visitordata, username, token }
+      let { username, token } = getUserCredentials();
+      addUniqueUser({ username, token });
+      return { ...visitordata, username, token };
     });
 
     if (sessionStorage.getItem(`padachone_visitordata:${dte}`)) {
@@ -316,7 +314,10 @@ export const useVisitorDetails = dte => {
     }
   }, []);
 
-  return {...visitordata, username: localStorage.getItem('padachone_username')};
+  return {
+    ...visitordata,
+    username: localStorage.getItem("padachone_username")
+  };
 };
 
 export const useMessageBroadcast = () => {
@@ -484,8 +485,34 @@ export const useWhatsapplogger = ({ user, comp, action = "idle", msg }) => {
   const { worker, visitor } = useContext(UserContext);
   const [logs, setLogs] = useState({});
   const nudgeWorker = () => {
-    debugger;
-    const msgPrefix = `User - ${visitor.username} from ${visitor.city} (${visitor.postal}) `;
+    let emoji;
+    switch (logs.action) {
+      case "Finetune Calc Method":
+        emoji = "💚";
+        break;
+      case "Finetune School":
+        emoji = "💛";
+        break;
+      case "Sidemenu":
+        emoji = "💜";
+        break;
+      case "Hijri Info":
+        emoji = "💙";
+        break;
+      case "Set me Up":
+        emoji = "👩‍❤️‍💋‍👩";
+        break;
+      case "Subscribe":
+        emoji = "😀";
+        break;
+      case "Traveller Onboard":
+        emoji = "🇺🇸";
+        break;
+      default:
+        emoji = "💂‍";
+        break;
+    }
+    const msgPrefix = `${visitor.username} ${emoji} ( ${visitor.city} - ${visitor.postal} ) :  `;
     const suffix = ` at ${window.location.hostname}`;
     worker.postMessage({
       type: "logger",

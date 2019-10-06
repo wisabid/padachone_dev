@@ -103,34 +103,16 @@ const TitleHeader = props => {
             background: `${sitetitle.bgcolor}`,
             minHeight: "80px"
           }}
-          gutterBottom
         >
-          {/* Are you in a moving train/bus?   */}
-
           <RichText render={sitetitle.description} />
-          {/* <span onClick={handleTravel} style={{fontWeight:'bold', cursor:'pointer'}}>Click here...</span> (Alpha Release) */}
         </div>
       </Zoom>
-      {/* <span onClick={() => setPage('Travel')}> */}
-      {/* <Typography color="textSecondary" variant="h2" component="h2" align="left" 
-        style={{fontWeight:'bold', fontSize:'1rem', padding:'10px 24px', color: 'rgb(3, 155, 229)', marginBottom:0}} gutterBottom>
-                    Travellers click here ... ( in α state)
-        </Typography> */}
-      {/* <Button variant="contained" color="primary" className={classes.button} onClick={() => setPage('Travel')} align="left" style={{color:'#fff'}}>
-          Travellers */}
-      {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
-      {/* <CloudUploadIcon className={classes.rightIcon} />
-        </Button> */}
-      {/* {page === 'SetMeup' && <OptionsButton options={[{opt : 'Back', page : 'Setup'}]} 
-          menuOptIcon={null}
-        setPage={(pge) => setPage(pge)} />} */}
 
       {page === "SetMeup" && (
         <Button
           variant="contained"
           color="primary"
           onClick={() => setPage(referrer)}
-          // className={classes.button}
           style={{ color: "white" }}
         >
           Back

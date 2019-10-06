@@ -438,8 +438,25 @@ export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
   });
 };
 
-export const loggerUtil = async msg => {
-  const suffix = ` at ${window.location.hostname}`;
+export const loggerUtil = async ({ msg }) => {
+  const hostname = window.location.hostname;
+  let emoji;
+  switch (hostname) {
+    case "dev.padachone.com":
+      emoji = "👁";
+      break;
+    case "www.padachone.com":
+      emoji = "💋";
+      break;
+    case "localhost":
+      emoji = "💪";
+      break;
+    default:
+      emoji = "🤷‍";
+      break;
+  }
+  const suffix = ` at ${emoji}${hostname}${emoji}`;
+  debugger;
   const result = await fetch(
     `https://padachone-dev.herokuapp.com/whatsapp?msg=${msg}${suffix}`
   );
@@ -448,11 +465,14 @@ export const loggerUtil = async msg => {
 };
 
 export const getUserCredentials = () => {
-  if (localStorage.getItem(`padachone_username`) && localStorage.getItem(`padachone_token`)) {
+  if (
+    localStorage.getItem(`padachone_username`) &&
+    localStorage.getItem(`padachone_token`)
+  ) {
     return {
-      username : localStorage.getItem(`padachone_username`),
-      token : localStorage.getItem(`padachone_token`)
-    }
+      username: localStorage.getItem(`padachone_username`),
+      token: localStorage.getItem(`padachone_token`)
+    };
   }
 
   // Instantiate Chance so it can be used
@@ -478,7 +498,7 @@ export const addUniqueUser = ({ username, token }) => {
     db.collection("users")
       .where("username", "==", username)
       // .where("data.IPv4", "==", visitor.IPv4)
-      // .where("host", "==", window.location.hostname)
+      .where("host", "==", window.location.hostname)
       .get()
       .then(querySnapshot => {
         const data = querySnapshot.docs.map(doc => doc.data());
@@ -496,10 +516,8 @@ export const addUniqueUser = ({ username, token }) => {
             })
             .then(() => {
               console.log("Successfully updated User data");
-               // Whatsapp Logger
-              loggerUtil(
-                `💩A new user - ${username} has just logged in at ${window.location.hostname}...`
-              );
+              // Whatsapp Logger
+              loggerUtil({msg : `💩${username} just registered`});
               return;
             })
             .catch(err => {
