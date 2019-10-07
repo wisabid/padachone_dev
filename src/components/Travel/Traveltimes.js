@@ -31,6 +31,9 @@ import Header from "../Layout/Header";
 import "./travel.css";
 import Menus from "../Menus";
 import { FT_PRAYER } from "../../utils/constants";
+import Accordion from "../Accordion";
+import Metadata from "../Prayers/Metadata";
+import TodayIcon from "@material-ui/icons/Today";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -87,6 +90,7 @@ const Traveltimes = ({
   school
 }) => {
   useRenderCounts("Traveltimes.js");
+  const [expanded, setExpanded] = useState(false);
 
   const [drawerOpen, handleDrawerToggle] = useDrawer();
   const [data, setData] = usePrayerOnGo({
@@ -180,6 +184,19 @@ const Traveltimes = ({
                 )}
 
                 <div>
+                  <Accordion
+                    title={<TodayIcon />}
+                    secondaryTitle="Hijri"
+                    key="prayermeta"
+                    expanded={expanded}
+                    setExpanded={setExpanded}
+                    styles={{ boxShadow: "none" }}
+                  >
+                    <div className="metadata-container">
+                      <Metadata data={data[0]} />
+                      {/* {JSON.stringify(prayerdata.date.hijri)} */}
+                    </div>
+                  </Accordion>
                   {Math.abs(activeStep - index) <= 2
                     ? // <img className={classes.img} src={step.imgPath} alt={step.label} />
                       Object.keys(data[0].timings).map((prayer, ind) => {
@@ -210,8 +227,8 @@ const Traveltimes = ({
                                 className={classes.title}
                               >
                                 {tzone}
-                                <br />
-                                {data[0].date.hijri.month.ar}
+                                {/* <br />
+                                {data[0].date.hijri.month.ar} */}
                               </Typography>
                             </CardContent>
                           </Card>

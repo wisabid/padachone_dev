@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Whatsapp logger custom hook & implemented in all important events
 - A unique username generated for all users in addition to hooking up with logger and firebase
 - EMojis in whatsapp logger
+- Hijri to Travel screen
 
 ### Changed
 - gitignore
@@ -61,6 +62,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - restrict reminder for just prayers
 - changed 1 min test reminder to 2 min reminder
 - Max stackbar is limited to 1 in infomessage of travel
+- Got rid of redundant hijri month display from travel 
+- Made infomessage in travel top center
+- Autohide duration of infomessage to 3s
 ### CHECKLIST
 - REMOVE DEV while going PROD
 - Reminder.js line # 71

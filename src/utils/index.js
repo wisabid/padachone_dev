@@ -374,6 +374,26 @@ export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
       messaging.requestPermission().then(async function() {
         try {
           const token = await messaging.getToken();
+          /*const options = {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            mode: 'no-cors',
+            body: JSON.stringify({
+              tz,
+              prayer,
+              time,
+              to: token,
+              cron: cronExpression,
+              city: visitor.city,
+              postal: visitor.postal,
+              user: visitor.username
+            })
+          };
+          const result = await fetch(`
+          http://localhost:1254/alfie
+        `, options);*/
           const result = await fetch(`
           https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&city=${visitor.city}&postal=${visitor.postal}&user=${visitor.username}
         `);
