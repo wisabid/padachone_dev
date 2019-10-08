@@ -190,10 +190,10 @@ const Traveltimes = ({
                     key="prayermeta"
                     expanded={expanded}
                     setExpanded={setExpanded}
-                    styles={{ boxShadow: "none" }}
+                    styles={{ boxShadow: "none", background:'#000', color:'#fff' }}
                   >
-                    <div className="metadata-container">
-                      <Metadata data={data[0]} />
+                    <div className="metadata-container" style={{background:'#000', color:'#fff'}}>
+                      <Metadata data={data[0]} styles={{background:'#000', color:'#fff'}}/>
                       {/* {JSON.stringify(prayerdata.date.hijri)} */}
                     </div>
                   </Accordion>

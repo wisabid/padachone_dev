@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Metadata = ({ data }) => {
+const Metadata = ({ data, styles={} }) => {
   const classes = useStyles();
 
   return (
@@ -56,7 +56,7 @@ const Metadata = ({ data }) => {
           ({data.date.hijri.format})
         </span>
       </Grid> */}
-      <List component="nav" className={classes.root} aria-label="Hijri Details">
+      <List component="nav" className={classes.root} aria-label="Hijri Details" style={styles}>
         <ListItem button>
           <Colorblock wide="20px" />
           <ListItemText

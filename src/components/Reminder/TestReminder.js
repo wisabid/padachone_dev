@@ -6,7 +6,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useCalcMethods } from "../../hooks/api-hooks";
 import { UserContext } from "../../store/context/userContext";
 import DialogModal from "../Modal";
-import { FT_PRAYER } from "../../utils/constants";
 import Button from "@material-ui/core/Button";
 import AlarmIcon from "@material-ui/icons/Alarm";
 import { addTestAlert } from "../../utils";

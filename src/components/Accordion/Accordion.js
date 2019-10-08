@@ -18,14 +18,20 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Accordion = ({ title, secondaryTitle, keyvalue, children, expanded, setExpanded, styles={} }) => {
-  console.log('keyvalue', keyvalue)
+const Accordion = ({
+  title,
+  secondaryTitle,
+  keyvalue,
+  children,
+  expanded,
+  setExpanded,
+  styles = {}
+}) => {
   const classes = useStyles();
-  console.log('EXP', expanded)
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  
+
   return (
     <ExpansionPanel
       expanded={expanded === `panel${keyvalue + 1}`}
@@ -34,18 +40,19 @@ const Accordion = ({ title, secondaryTitle, keyvalue, children, expanded, setExp
       style={styles}
     >
       <ExpansionPanelSummary
-        expandIcon={<ExpandMoreIcon />}
+        expandIcon={<ExpandMoreIcon style={styles} />}
         aria-controls={`panel${keyvalue}bh-content`}
         id={`panel${keyvalue}bh-header`}
+        style={styles}
       >
-        <Typography className={classes.heading}>{title}</Typography>
-        <Typography className={classes.secondaryHeading}>
+        <Typography className={classes.heading} style={styles}>
+          {title}
+        </Typography>
+        <Typography className={classes.secondaryHeading} style={styles}>
           {secondaryTitle}
         </Typography>
       </ExpansionPanelSummary>
-      <ExpansionPanelDetails>
-        {children}
-      </ExpansionPanelDetails>
+      <ExpansionPanelDetails>{children}</ExpansionPanelDetails>
     </ExpansionPanel>
   );
 };

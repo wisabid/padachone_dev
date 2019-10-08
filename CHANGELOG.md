@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - to do : skeletons using material ui
 - to do : make text and bg color dynamic with prismic
 - to do : JWT for api & protect routes
+- disabled apod fetch
 
 ## [2.2.0] - 2019-09-..
 ### Added
@@ -65,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Got rid of redundant hijri month display from travel 
 - Made infomessage in travel top center
 - Autohide duration of infomessage to 3s
+- Customized hijri for the travel
 ### CHECKLIST
 - REMOVE DEV while going PROD
 - Reminder.js line # 71

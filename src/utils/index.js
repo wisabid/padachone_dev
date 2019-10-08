@@ -476,7 +476,6 @@ export const loggerUtil = async ({ msg }) => {
       break;
   }
   const suffix = ` at ${emoji}${hostname}${emoji}`;
-  debugger;
   const result = await fetch(
     `https://padachone-dev.herokuapp.com/whatsapp?msg=${msg}${suffix}`
   );

@@ -1,85 +1,64 @@
-import React, {useContext, useEffect, useState} from 'react';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
-import {P_MENUS, PRISMIC_LANDING_BG} from '../../utils/constants';
-import {UserContext} from '../../store/context/userContext';
-import {useRenderCounts, useCmsAsset} from  '../../hooks/api-hooks';
+import React, { useContext, useEffect, useState } from "react";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { P_MENUS, PRISMIC_LANDING_BG } from "../../utils/constants";
+import { UserContext } from "../../store/context/userContext";
+import { useRenderCounts, useCmsAsset } from "../../hooks/api-hooks";
 
-// import GridListTile from '@material-ui/core/GridListTile';
-// import GridListTileBar from '@material-ui/core/GridListTileBar';
-// import IconButton from '@material-ui/core/IconButton';
-// import InfoIcon from '@material-ui/icons/Info';
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </Link>
-      {' team.'}
-    </Typography>
-  );
-}
 const useStyles = makeStyles(theme => ({
   icon: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2)
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6),
+    padding: theme.spacing(8, 0, 6)
   },
   heroButtons: {
-    marginTop: theme.spacing(4),
+    marginTop: theme.spacing(4)
   },
   cardGrid: {
-    padding: 0,
-    marginTop: '12px',
-    padding : '15px'
-    // marginLeft: '10px',
-    // marginRight:'10px'
-    // paddingTop: theme.spacing(8),
-    // paddingBottom: theme.spacing(8),
+    marginTop: "12px",
+    padding: "15px"
   },
   card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    borderRadius: '0px',
-    background: 'transparent'
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "0px",
+    background: "transparent"
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
-    paddingTop: '40%',
-    paddingBottom: '5%',
-    color: '#fff',
-    height: '100%',
+    // paddingTop: '56.25%', // 16:9
+    paddingTop: "40%",
+    paddingBottom: "5%",
+    color: "#fff",
+    height: "100%"
   },
   cardContent: {
     // flexGrow: 1,
     // position: 'relative',
     // bottom: '127px'
-    paddingTop: '56.25%', // 16:9
-    paddingTop: '40%',
-    paddingBottom: '5%',
-    color: '#fff',
-    height: '100%',
+    paddingTop: "56.25%", // 16:9
+    paddingTop: "40%",
+    paddingBottom: "5%",
+    color: "#fff",
+    height: "100%"
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
+    padding: theme.spacing(6)
   },
   icon: {
-    color: 'rgba(255, 255, 255, 0.54)',
+    color: "rgba(255, 255, 255, 0.54)"
   },
   text: {
-    minHeight: '83px',
-    color: '#663399'
+    minHeight: "83px",
+    color: "#663399"
     // color: '#000'
   }
 }));
@@ -87,34 +66,69 @@ const useStyles = makeStyles(theme => ({
 const cards = P_MENUS;
 
 function Album() {
-  useRenderCounts('AppPages.js');  
-  const [landingGrid, setLandingGrid] = useState({})
+  useRenderCounts("AppPages.js");
+  const [landingGrid, setLandingGrid] = useState({});
   const asset = useCmsAsset(PRISMIC_LANDING_BG);
+
+  const classes = useStyles();
+  const { handleNav, worker, workerData } = useContext(UserContext);
   useEffect(() => {
     if (asset.length) {
-      setLandingGrid({bg : asset[0].assetImage.url,
+      setLandingGrid({
+        bg: asset[0].assetImage.url,
         bgColor: `${asset[0].bgColor}`,
-        fontColor : asset[0].textColor})
+        fontColor: asset[0].textColor
+      });
+      /*
+      if (worker instanceof Worker) {
+        worker.postMessage({
+          type: "apod"
+          msg: {current : localStorage.getItem("padachone_apod")}
+        });
+      }*/
     }
-  }, [asset])
+  }, [asset]);
+  /*useEffect(() => {
+    if (workerData && workerData['worker_data'] && workerData['worker_data'].msg && workerData['worker_data'].msg.targetcomp === 'AppPages' && !workerData['worker_data'].msg.error) {
+      debugger;
+      console.log(workerData['worker_data'].msg);
+      setLandingGrid({...landingGrid, bg : workerData['worker_data'].msg.url});
+      localStorage.setItem("padachone_apod", workerData['worker_data'].msg.url})
+    }
+  }, [workerData])*/
 
-  
-  const classes = useStyles();
-  const {handleNav} = useContext(UserContext);
-  
-  
   return (
-    <React.Fragment>      
+    <React.Fragment>
       {/* <main> */}
-        {/* Hero unit */}        
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={1} style={{backgroundImage: `url(${landingGrid.bg})`, backgroundPosition: 'center',backgroundRepeat:'no-repeat', backgroundColor: `${landingGrid.bgColor}`}}>
-            {cards.map((card, indx) => (
-              <Grid item key={`${indx}-${card.page}`} xs={6} sm={6} md={4} style={{padding:'0px', background:'transparent'}}>
-                <Card className={classes.card}>
-                  <CardContent className={`${classes.cardContent} ${card.page}`} 
-                    onClick={() => handleNav(card.page === 'Home'?'SetMeup':card.page)}>
+      {/* Hero unit */}
+      <Container className={classes.cardGrid} maxWidth="md">
+        {/* End hero unit */}
+        <Grid
+          container
+          spacing={1}
+          style={{
+            backgroundImage: `url(${landingGrid.bg})`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: `${landingGrid.bgColor}`
+          }}
+        >
+          {cards.map((card, indx) => (
+            <Grid
+              item
+              key={`${indx}-${card.page}`}
+              xs={6}
+              sm={6}
+              md={4}
+              style={{ padding: "0px", background: "transparent" }}
+            >
+              <Card className={classes.card}>
+                <CardContent
+                  className={`${classes.cardContent} ${card.page}`}
+                  onClick={() =>
+                    handleNav(card.page === "Home" ? "SetMeup" : card.page)
+                  }
+                >
                   {/* // <CardMedia
                   //   className={classes.cardMedia}
                   //   // image="https://source.unsplash.com/random"
@@ -122,16 +136,28 @@ function Album() {
                   //   title="Image title"
                   //   onClick={() => handleNav(card.page === 'Home'?'SetMeup':card.page)}
                   // > */}
-                    <Button color="primary" className={`${classes.text} landing-navs`} style={{animationDelay: `${indx}s`}}>
-                      <Typography gutterBottom variant="h6" component="h2" style={{fontWeight:'bold', color: `${landingGrid.fontColor}`}}>
-                        {card.label === 'Home'?'Set me up':card.label}
-                      </Typography>
-                    </Button>
-                    {/* // <Typography>
+                  <Button
+                    color="primary"
+                    className={`${classes.text} landing-navs`}
+                    style={{ animationDelay: `${indx}s` }}
+                  >
+                    <Typography
+                      gutterBottom
+                      variant="h6"
+                      component="h2"
+                      style={{
+                        fontWeight: "bold",
+                        color: `${landingGrid.fontColor}`
+                      }}
+                    >
+                      {card.label === "Home" ? "Set me up" : card.label}
+                    </Typography>
+                  </Button>
+                  {/* // <Typography>
                     //   This is a media card. You can use this section to describe the content.
                     // </Typography> */}
-                  </CardContent>
-                  {/* <CardContent className={classes.cardContent}>
+                </CardContent>
+                {/* <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       Heading
                     </Typography>
@@ -139,8 +165,8 @@ function Album() {
                       This is a media card. You can use this section to describe the content.
                     </Typography>
                   </CardContent>                   */}
-                </Card>
-                {/* <GridListTile key={card}>
+              </Card>
+              {/* <GridListTile key={card}>
                   <img src="https://source.unsplash.com/random" alt="title" />
                   <GridListTileBar
                     title="{tile.title}"
@@ -152,10 +178,10 @@ function Album() {
                     }
                   />
                 </GridListTile> */}
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
       {/* </main>      */}
     </React.Fragment>
   );
