@@ -1,4 +1,4 @@
-self.addEventListener("message", async (e) => {
+self.addEventListener("message", async e => {
   console.log(`Iam in receipt of your message : `, JSON.stringify(e.data));
   const { type, msg } = e.data;
   let message;
@@ -9,9 +9,19 @@ self.addEventListener("message", async (e) => {
       sendWhatsappLogs(message, getbackToSite);
       break;
     case "apod":
-      const apodJson = await fetchApod();
-      if (apodJson.url !== msg.current) {
-        getbackToSite({...apodJson, targetcomp : 'AppPages'});
+      try {
+        console.log(`WORKER FROM WebWORKER::: its apod`);
+
+        const apodJson = await fetchApod();
+        console.log(`WORKER FROM WebWORKER::: Fetched apod`);
+
+        if (apodJson.url !== msg.current) {
+          console.log(`WORKER FROM WebWORKER::: apodJson.url !== msg.current`);
+
+          getbackToSite({ ...apodJson, targetcomp: "AppPages" });
+        }
+      } catch (err) {
+        getbackToSite({ error: err.message });
       }
       // sendWhatsappLogs(message, getbackToSite);
       break;
@@ -21,6 +31,8 @@ self.addEventListener("message", async (e) => {
 });
 
 function getbackToSite(message) {
+  console.log(`WORKER FROM WebWORKER::: Posting message back to app`);
+
   self.postMessage({
     msg: message
   });
