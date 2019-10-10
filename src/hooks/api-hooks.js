@@ -22,7 +22,10 @@ import {
   IGNORE_HOSTS,
   PRISMIC_TOKEN,
   PRISMIC_SITEDESCRIPTION_DOC,
-  PRISMIC_SITEMEDIAS_DOC
+  PRISMIC_SITEMEDIAS_DOC,
+  PRISMIC_LANDING_BG,
+  PRISMIC_DYNAMIC_SOURCE_APP_TYPE,
+  PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE
 } from "../utils/constants";
 import { UserContext } from "../store/context/userContext";
 export const usePrayer = ({
@@ -391,6 +394,7 @@ export const useMessageBroadcast = () => {
                     assetImage
                     textColor
                     bgColor
+                    dynamicSource
                   }
                 }
               }
@@ -508,6 +512,9 @@ export const useWhatsapplogger = ({ user, comp, action = "idle", msg }) => {
       case "Traveller Onboard":
         emoji = "🇺🇸";
         break;
+      case "APOD":
+        emoji = "👩‍🚀";
+        break;
       default:
         emoji = "💂‍";
         break;
@@ -526,4 +533,126 @@ export const useWhatsapplogger = ({ user, comp, action = "idle", msg }) => {
     }
   }, [logs]);
   return [logs, setLogs];
+};
+
+export const useApod = () => {
+  const { worker, workerData, setWorkerData } = useContext(UserContext);
+
+  const [landingGrid, setLandingGrid] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [showfetching, setShowfetching] = useState({
+    show: false,
+    msg: `Fetching 'Astronomy Picture of the Day'....`
+  });
+  const asset = useCmsAsset(PRISMIC_LANDING_BG);
+  const pdtodaysDate = getPDdata()
+    .split(" ")
+    .join("");
+  useEffect(() => {
+    if (asset.length) {
+      setLandingGrid({
+        bg: asset[0].assetImage.url,
+        bgColor: `${asset[0].bgColor}`,
+        fontColor: asset[0].textColor,
+        type: PRISMIC_DYNAMIC_SOURCE_APP_TYPE
+      });
+      console.log("DYN", asset[0].dynamicSource);
+
+      //  Fetch apod only if its prismic hooked type
+      if (asset[0].dynamicSource !== PRISMIC_DYNAMIC_SOURCE_APP_TYPE) {
+        if (
+          !localStorage.getItem(`padachone_apod:${pdtodaysDate}`) &&
+          worker instanceof Worker
+        ) {
+          setLoading(true);
+
+          console.log(`WORKER Going to call web worker...`);
+          worker.postMessage({
+            type: "apod",
+            msg: {
+              current: localStorage.getItem(`padachone_apod:${pdtodaysDate}`)
+            }
+          });
+        } else {
+          console.log(
+            `WORKER NOT Going to call web worker as the image is already in the ls...`
+          );
+
+          const apodurl = JSON.parse(
+            localStorage.getItem(`padachone_apod:${pdtodaysDate}`)
+          ).url;
+          setLandingGrid(() => {
+            return {
+              ...landingGrid,
+              bg: apodurl,
+              bgColor: "#000",
+              fontColor: "rgb(3, 155, 229)",
+              type: PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE 
+            };
+          });
+          console.log(`WORKER Setting bg url for APPPAGES...`);
+        }
+      }
+    }
+  }, [asset]);
+  useEffect(() => {
+    console.log(`WORKER useEffect of workerData...`);
+
+    if (
+      workerData &&
+      workerData["worker_data"] &&
+      workerData["worker_data"].msg &&
+      workerData["worker_data"].msg.targetcomp === "AppPages" &&
+      !workerData["worker_data"].msg.error &&
+      workerData["worker_data"].msg.url
+    ) {
+      console.log(`WORKER workerData received... : ${workerData}`);
+
+      // console.log(workerData['worker_data'].msg);
+      setLandingGrid({
+        ...landingGrid,
+        bg: workerData["worker_data"].msg.url,
+        bgColor: "#000",
+        fontColor: "rgb(3, 155, 229)"
+      });
+      Object.keys(localStorage).map(key => {
+        if (key.startsWith("padachone_apod:")) {
+          localStorage.removeItem(key);
+        }
+        return key;
+      });
+      localStorage.setItem(
+        `padachone_apod:${pdtodaysDate}`,
+        JSON.stringify(workerData["worker_data"].msg)
+      );
+      console.log(`WORKER Set localstorage with ... : ${workerData}`);
+      setWorkerData({});
+      console.log(`WORKER Set workerData null`);
+    } else if (
+      workerData["worker_data"] &&
+      workerData["worker_data"].msg &&
+      workerData["worker_data"].msg.error
+    ) {
+      setShowfetching({ show: true, msg: `Fetching failed! Falling back....` });
+    }
+  }, [workerData]);
+  useEffect(() => {
+    if (landingGrid && landingGrid.bg) {
+      setTimeout(() => {
+        setLoading(() => {
+          setShowfetching({ show: false, msg: "" });
+          return false;
+        });
+      }, 2000);
+    }
+  }, [landingGrid]);
+  useEffect(() => {
+    if (loading) {
+      setShowfetching({
+        show: true,
+        msg: `Fetching 'Astronomy Picture of the Day'....`
+      });
+    }
+  }, [loading]);
+  return [landingGrid, loading, showfetching];
 };

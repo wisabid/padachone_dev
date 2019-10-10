@@ -27,9 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - to do : skeletons using material ui
 - to do : make text and bg color dynamic with prismic
 - to do : JWT for api & protect routes
-- disabled apod fetch
 
-## [2.2.0] - 2019-09-..
+## [3.0.0] - 2019-09-..
 ### Added
 - FCM
 - Handled firebase push api check for browser (meant for safari)
@@ -51,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A unique username generated for all users in addition to hooking up with logger and firebase
 - EMojis in whatsapp logger
 - Hijri to Travel screen
+- Apod for Landing page
+- Conditional fetching of apod based on dynamic source - prismic or application
+- Apod details screen with redirection
+- Moving bg for apod
+- Hooked whatsapp logging to apod and learn more
 
 ### Changed
 - gitignore
@@ -67,11 +71,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Made infomessage in travel top center
 - Autohide duration of infomessage to 3s
 - Customized hijri for the travel
+- Also deleted testreminder & apod ls while logging out
 ### CHECKLIST
 - REMOVE DEV while going PROD
 - Reminder.js line # 71
 - utils/index.js : used resolve instead of reject
 - visitor logging & reminder logging
+- Add date for changelog release
 
 ## [2.1.3] - 2019-09-04
 ### Changed

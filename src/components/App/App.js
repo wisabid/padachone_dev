@@ -31,6 +31,7 @@ import Newsletters from "../Newsletters";
 import Notification from "../Notification";
 import Banner from "../TopBar";
 import { messaging } from "../../config/firebase";
+import Apod from '../Apod';
 const theme = createMuiTheme({
   palette: {
     primary: lightBlue,
@@ -48,15 +49,16 @@ const theme = createMuiTheme({
 });
 function App() {
   useRenderCounts("App.js");
+  const [landingpage] = useState("Setup");
   // Web worker part
   const [worker, setWorker] = useState({});
   const [workerData, setWorkerData] = useState({});
-  // Web worker part ends here 
+  // Web worker part ends here
   const [msgbroadcast] = useMessageBroadcast();
   // Global State
-  const [notification, setNotification] = useState({})
+  const [notification, setNotification] = useState({});
   const [tz, setTz] = useState("");
-  const [page, setPage] = useState("Setup");
+  const [page, setPage] = useState(landingpage);
   console.log("%c PAGE" + page, "font-size:40px;");
   const [iamin, setIamin] = useState(false);
   const [modal, setModal] = useState({ show: false, name: "" });
@@ -110,17 +112,19 @@ function App() {
 
   useEffect(() => {
     // Web Worker
-    const padachoneWorker = new Worker('padachone.worker.js');
+    const padachoneWorker = new Worker("padachone.worker.js");
     setWorker(padachoneWorker);
-    padachoneWorker.addEventListener('message', (e) => {
-      console.log(`WORKER: You have a message from worker ${e.data.msg}`)
-      setWorkerData({worker_data : e.data});
-    })
+    padachoneWorker.addEventListener("message", e => {
+      console.log(
+        `WORKER: You have a message from worker ${JSON.stringify(e.data.msg)}`
+      );
+      setWorkerData({ worker_data: e.data });
+    });
     // FCM
     // requestNotify(visitor);
     if (messaging) {
       navigator.serviceWorker.addEventListener("message", message => {
-        setNotification(message.data)
+        setNotification(message.data);
         handleNav("setNotifymodal");
         console.log("MSG : ", message);
       });
@@ -168,7 +172,7 @@ function App() {
     } else {
       setPage(() => {
         setIamin(false);
-        return "Setup";
+        return landingpage;
       });
     }
   };
@@ -219,7 +223,9 @@ function App() {
         key !== "padachone:region" &&
         key !== "padachone:method" &&
         key !== "padachone:school" &&
-        key !== `padachone_FT-${FT_PRAYER}`
+        key !== `padachone_FT-${FT_PRAYER}` &&
+        key !== `padachone_apod:${pdtodaysDate}` &&
+        key !== "padachone_testreminder"
       ) {
         localStorage.removeItem(key);
       }
@@ -293,10 +299,11 @@ function App() {
             handleNav: handleNav,
             visitor: visitor,
             cmsContents: msgbroadcast,
-            notification : notification,
-            setNotification : setNotification,
+            notification: notification,
+            setNotification: setNotification,
             worker: worker,
-            workerData : workerData
+            workerData: workerData,
+            setWorkerData: setWorkerData
           }}
         >
           <ErrorBoundary>
@@ -312,7 +319,7 @@ function App() {
             </Zoom>
             {window.location.hostname === "dev.padachone.com" && <Banner />}
             {page === "Newsletters" && <Newsletters />}
-            {!finished && page === "Setup" && (
+            {!finished && page === landingpage && (
               <LandingPage
                 finished={locationstate => handlefinished(locationstate)}
                 country={country}
@@ -350,8 +357,10 @@ function App() {
                 }
                 region={region}
                 place={place}
+                referrer={landingpage}
               />
             )}
+            {page === "Apod" && <Apod pdate={pdtodaysDate} referrer={landingpage}/>}
             {finished && page === "Home" && (
               <Layout
                 country={country}

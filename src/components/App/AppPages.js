@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -6,9 +6,11 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { P_MENUS, PRISMIC_LANDING_BG } from "../../utils/constants";
+import { P_MENUS, PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE } from "../../utils/constants";
 import { UserContext } from "../../store/context/userContext";
-import { useRenderCounts, useCmsAsset } from "../../hooks/api-hooks";
+import { useRenderCounts, useApod } from "../../hooks/api-hooks";
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -22,8 +24,10 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(4)
   },
   cardGrid: {
-    marginTop: "12px",
-    padding: "15px"
+    // marginTop: "12px",
+    padding: "15px",
+    paddingTop: '0',
+    position:'relative'
   },
   card: {
     height: "100%",
@@ -67,50 +71,39 @@ const cards = P_MENUS;
 
 function Album() {
   useRenderCounts("AppPages.js");
-  const [landingGrid, setLandingGrid] = useState({});
-  const asset = useCmsAsset(PRISMIC_LANDING_BG);
-
-  const classes = useStyles();
-  const { handleNav, worker, workerData } = useContext(UserContext);
+  const [landingGrid, loading, showfetching] = useApod();
   useEffect(() => {
-    if (asset.length) {
-      setLandingGrid({
-        bg: asset[0].assetImage.url,
-        bgColor: `${asset[0].bgColor}`,
-        fontColor: asset[0].textColor
-      });
-      /*
-      if (worker instanceof Worker) {
-        worker.postMessage({
-          type: "apod"
-          msg: {current : localStorage.getItem("padachone_apod")}
-        });
-      }*/
-    }
-  }, [asset]);
-  /*useEffect(() => {
-    if (workerData && workerData['worker_data'] && workerData['worker_data'].msg && workerData['worker_data'].msg.targetcomp === 'AppPages' && !workerData['worker_data'].msg.error) {
-      debugger;
-      console.log(workerData['worker_data'].msg);
-      setLandingGrid({...landingGrid, bg : workerData['worker_data'].msg.url});
-      localStorage.setItem("padachone_apod", workerData['worker_data'].msg.url})
-    }
-  }, [workerData])*/
+    console.log('FETCHING', showfetching)
+  }, [showfetching])
+  const classes = useStyles();
+  const { handleNav, setPage } = useContext(UserContext);
+  
 
   return (
     <React.Fragment>
       {/* <main> */}
       {/* Hero unit */}
       <Container className={classes.cardGrid} maxWidth="md">
+      {loading && <LinearProgress />}
         {/* End hero unit */}
+        {showfetching.show && <small style={{position:'absolute', left:'25%', color:'#000'}}><i><b>{showfetching.msg}</b></i></small>}
+
         <Grid
           container
           spacing={1}
           style={{
             backgroundImage: `url(${landingGrid.bg})`,
-            backgroundPosition: "center",
+            // backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            backgroundColor: `${landingGrid.bgColor}`
+            backgroundColor: `${landingGrid.bgColor}`,
+            transition: 'background-image, background-color,  background-position 1s ease-in-out',
+            transitionDelay: '1s',
+            transitionDuration: '1s',
+            backgroundPosition: '0px 0px',
+            // backgroundRepeat: 'repeat-x',
+            animation: 'animatedBackground 40s linear infinite',
+            animationDirection: 'alternate'
+
           }}
         >
           {cards.map((card, indx) => (
@@ -181,6 +174,7 @@ function Album() {
             </Grid>
           ))}
         </Grid>
+        {landingGrid.type === PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE && <small style={{textDecoration:'underline', fontStyle:'italic'}} onClick={() => setPage('Apod')}><pre>Astronomy Picture of the Day</pre></small>}
       </Container>
       {/* </main>      */}
     </React.Fragment>

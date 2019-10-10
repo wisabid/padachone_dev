@@ -108,8 +108,9 @@ const TitleHeader = props => {
         </div>
       </Zoom>
 
-      {page === "SetMeup" && (
+      {(page === "SetMeup" || page === "Apod") && (
         <Button
+          size="small"
           variant="contained"
           color="primary"
           onClick={() => setPage(referrer)}
