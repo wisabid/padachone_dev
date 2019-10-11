@@ -613,7 +613,8 @@ export const useApod = () => {
         ...landingGrid,
         bg: workerData["worker_data"].msg.url,
         bgColor: "#000",
-        fontColor: "rgb(3, 155, 229)"
+        fontColor: "rgb(3, 155, 229)",
+        type: PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE 
       });
       Object.keys(localStorage).map(key => {
         if (key.startsWith("padachone_apod:")) {
