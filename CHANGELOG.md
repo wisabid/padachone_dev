@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Apod details screen with redirection
 - Moving bg for apod
 - Hooked whatsapp logging to apod and learn more
+- Dynamically (prismic) overridden text and bg color for landing bg for apod sake
 
 ### Changed
 - gitignore

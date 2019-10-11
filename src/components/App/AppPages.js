@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { P_MENUS, PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE } from "../../utils/constants";
+import { P_MENUS, PRISMIC_DYNAMIC_SOURCE_APP_TYPE } from "../../utils/constants";
 import { UserContext } from "../../store/context/userContext";
 import { useRenderCounts, useApod } from "../../hooks/api-hooks";
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -174,7 +174,7 @@ function Album() {
             </Grid>
           ))}
         </Grid>
-        {landingGrid.type === PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE && <small style={{textDecoration:'underline', fontStyle:'italic'}} onClick={() => setPage('Apod')}><pre>Astronomy Picture of the Day</pre></small>}
+        {landingGrid.type === PRISMIC_DYNAMIC_SOURCE_APP_TYPE && <small style={{textDecoration:'underline', fontStyle:'italic'}} onClick={() => setPage('Apod')}><pre>Astronomy Picture of the Day</pre></small>}
       </Container>
       {/* </main>      */}
     </React.Fragment>

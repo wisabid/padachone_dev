@@ -395,6 +395,8 @@ export const useMessageBroadcast = () => {
                     textColor
                     bgColor
                     dynamicSource
+                    textColorOverride
+                    bgColorOverride
                   }
                 }
               }
@@ -554,12 +556,12 @@ export const useApod = () => {
         bg: asset[0].assetImage.url,
         bgColor: `${asset[0].bgColor}`,
         fontColor: asset[0].textColor,
-        type: PRISMIC_DYNAMIC_SOURCE_APP_TYPE
+        type: PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE
       });
       console.log("DYN", asset[0].dynamicSource);
 
-      //  Fetch apod only if its prismic hooked type
-      if (asset[0].dynamicSource !== PRISMIC_DYNAMIC_SOURCE_APP_TYPE) {
+      //  Fetch apod only if its 'application' hooked type, so that application has the liberty to fetch it from apod
+      if (asset[0].dynamicSource === PRISMIC_DYNAMIC_SOURCE_APP_TYPE) {
         if (
           !localStorage.getItem(`padachone_apod:${pdtodaysDate}`) &&
           worker instanceof Worker
@@ -585,9 +587,9 @@ export const useApod = () => {
             return {
               ...landingGrid,
               bg: apodurl,
-              bgColor: "#000",
-              fontColor: "rgb(3, 155, 229)",
-              type: PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE 
+              bgColor: `${asset[0].bgColorOverride}`,
+              fontColor: asset[0].textColorOverride,
+              type: PRISMIC_DYNAMIC_SOURCE_APP_TYPE
             };
           });
           console.log(`WORKER Setting bg url for APPPAGES...`);
@@ -612,9 +614,9 @@ export const useApod = () => {
       setLandingGrid({
         ...landingGrid,
         bg: workerData["worker_data"].msg.url,
-        bgColor: "#000",
-        fontColor: "rgb(3, 155, 229)",
-        type: PRISMIC_DYNAMIC_SOURCE_PRISMIC_TYPE 
+        bgColor: `${asset[0].bgColorOverride}`,
+        fontColor: asset[0].textColorOverride,
+        type: PRISMIC_DYNAMIC_SOURCE_APP_TYPE
       });
       Object.keys(localStorage).map(key => {
         if (key.startsWith("padachone_apod:")) {
