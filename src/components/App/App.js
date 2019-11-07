@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/styles";
 import lightBlue from "@material-ui/core/colors/lightBlue";
 import Setup from "../Setup/Setup";
 import stepperData from "../Setup/setup-stepper-data.json";
-import { getPDdata } from "../../utils";
+import { getPDdata, getDateTimeOf } from "../../utils";
 import ErrorBoundary from "../Error/ErrorBoundary";
 import CookieConsent from "react-cookie-consent";
 import Messages from "../Messages";
@@ -28,10 +28,11 @@ import {
   useMessageBroadcast
 } from "../../hooks/api-hooks";
 import Newsletters from "../Newsletters";
-import Notification from "../Notification";
+import Notify from "../Notification/Notify";
 import Banner from "../TopBar";
 import { messaging } from "../../config/firebase";
-import Apod from '../Apod';
+import Apod from "../Apod";
+import Media from "../Media";
 const theme = createMuiTheme({
   palette: {
     primary: lightBlue,
@@ -139,6 +140,10 @@ function App() {
     pdtodaysDate: getPDdata()
       .split(" ")
       .join(""),
+    americanDate: getDateTimeOf("America/New_York")
+      .split(",")[0]
+      .split(" ")
+      .join(""),
     place: localStorage.getItem("padachone:place"),
     country: localStorage.getItem("padachone:country"),
     region: localStorage.getItem("padachone:region"),
@@ -156,6 +161,7 @@ function App() {
     region,
     pdtodaysDate,
     prayerdata,
+    americanDate,
     place,
     method,
     school
@@ -186,6 +192,8 @@ function App() {
       setModal({ show: true, name: "Notification" });
     } else if (page === "setFTmodal") {
       setModal({ show: true, name: "Finetune" });
+    } else if (page === "setMediamodal") {
+      setModal({ show: true, name: "Media" });
     } else if (page === "reset") {
       setModal({
         show: true,
@@ -224,8 +232,10 @@ function App() {
         key !== "padachone:method" &&
         key !== "padachone:school" &&
         key !== `padachone_FT-${FT_PRAYER}` &&
-        key !== `padachone_apod:${pdtodaysDate}` &&
-        key !== "padachone_testreminder"
+        key !== `padachone_apod:${americanDate}` &&
+        key !== "padachone_testreminder" &&
+        key !== "padachone_username" &&
+        key !== "padachone_token"
       ) {
         localStorage.removeItem(key);
       }
@@ -360,7 +370,9 @@ function App() {
                 referrer={landingpage}
               />
             )}
-            {page === "Apod" && <Apod pdate={pdtodaysDate} referrer={landingpage}/>}
+            {page === "Apod" && (
+              <Apod pdate={americanDate} referrer={landingpage} />
+            )}
             {finished && page === "Home" && (
               <Layout
                 country={country}
@@ -396,13 +408,17 @@ function App() {
             )}
 
             {modal.show && modal.name === "Notification" && (
-              <Notification
+              <Notify
                 modal={modal}
                 setModal={setModal}
                 method={method}
                 school={school}
                 handleForceTrigger={obj => handleForceTrigger(obj)}
               />
+            )}
+
+            {modal.show && modal.name === "Media" && (
+              <Media modal={modal} setModal={setModal} />
             )}
 
             {/* <FbChat /> */}

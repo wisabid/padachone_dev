@@ -27,8 +27,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - to do : skeletons using material ui
 - to do : make text and bg color dynamic with prismic
 - to do : JWT for api & protect routes
+### CHECKLIST
+- REMOVE DEV while going PROD (package-lock, package.json)
+- Add date for changelog release
+### NOTES
+- Always look at handleexit when a new ls or ss is added
+- loggin mechanism with prefixes
+- simulation of crash is available at Setup.js
+- Use `GR` for inspecting graphQL data logs
 
-## [3.0.0] - 2019-09-..
+## [3.2.0] - 2019-11-..
+### Added
+- Media Playback at homescreen (Prayertimes screen)
+- Hook up with Prismic
+
+## [3.1.0] - 2019-10-28
+### Added
+- Code Splitting with lazy-suspense for Travel
+- Log for crash report
+
+### Changed
+- Replaced APOD word to the apod title
+- Replaced hardcoded place example with visitors city & postal code
+
+## [3.0.1] - 2019-10-14
+### Added
+- username display on click of u in Know Your with modal display
+- logs for Prayer times & dismiss functionality
+- log detected location in Traveller onboard & hijiri from Travel
+
+### Changed
+- username & token would now persist even if you start over from set me up screen
+- Apod is updated when American time changes
+- Message prefix to  logged in log message
+- Apod is now dependent only on American date as user's date is not being passed as current date anymore
+- Ignore hosts for loggers
+
+## [3.0.0] - 2019-10-12
 ### Added
 - FCM
 - Handled firebase push api check for browser (meant for safari)
@@ -73,12 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Autohide duration of infomessage to 3s
 - Customized hijri for the travel
 - Also deleted testreminder & apod ls while logging out
-### CHECKLIST
-- REMOVE DEV while going PROD
-- Reminder.js line # 71
-- utils/index.js : used resolve instead of reject
-- visitor logging & reminder logging
-- Add date for changelog release
+- Example address of Set me up process
 
 ## [2.1.3] - 2019-09-04
 ### Changed

@@ -1,6 +1,6 @@
 import * as emailjs from "emailjs-com";
 import moment from "moment";
-import { PRAYERS_ARR } from "./constants";
+import { PRAYERS_ARR, IGNORE_HOSTS } from "./constants";
 import { db } from "../config/firebase";
 import { messaging } from "../config/firebase";
 import Chance from "chance";
@@ -118,33 +118,12 @@ export const checkSubscription = email => {
     .collection("subscribers")
     .where("email", "==", email)
     .get();
-  // .then(querySnapshot => {
-  //     const data = querySnapshot.docs.map(doc => doc.data());
-  //     console.log('DB : ',data); // array of cities objects
-  //     // if (data.length) {
-  //     //     return true;
-  //     // }
-  //     // else {
-  //     //     return false;
-  //     // }
-
-  // });
 };
 
 export const addNewSubscriber = ({ email, ip }) => {
   return db
     .collection("subscribers")
     .add({ email: email, active: true, ip: ip });
-  // .doc(new Date().getTime().toString())
-  // .set({email : email})
-  // .then(() => {
-  //     NotificationManager.success("A new user has been added", "Success");
-  //     window.location = "/";
-  // })
-  // .catch(error => {
-  //     NotificationManager.error(error.message, "Create user failed");
-  //     this.setState({ isSubmitting: false });
-  // });
 };
 export const addUniqueVisitor = visitor => {
   if (visitor.IPv4) {
@@ -189,20 +168,6 @@ export const addUniqueVisitor = visitor => {
   }
 };
 
-// export const askForNotifyPermission = async () => {
-//     debugger;
-//     try {
-//       const messaging = firebaseApp.messaging();
-//       await messaging.requestPermission();
-//       const token = await messaging.getToken();
-//       console.log('token do usuário:', token);
-
-//       return token;
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-
 export const requestNotify = visitor => {
   if (messaging) {
     // console.log('FCM', await messaging.getToken())
@@ -212,15 +177,7 @@ export const requestNotify = visitor => {
         try {
           const token = await messaging.getToken();
           console.log("ACCEPTED", token);
-          /*fetch('https://www.easycron.com/rest/list?token=7f8b5800988b8daa158e078123a6f181&sortby=cronId&order=asc', {
-              headers : {
-                'Access-Control-Allow-Origin' : '*',
-                'Access-Control-Allow-Headers' : '*'
-              }
-          })
-          .then(res => {
-              console.log(res);
-          })*/
+
           db.collection("notification")
             .where("token", "==", token)
             .get()
@@ -250,10 +207,6 @@ export const requestNotify = visitor => {
       .catch(function(err) {
         console.log("Unable to get permission to notify.", err);
       });
-
-    // navigator.serviceWorker.addEventListener("message", message => {
-    //   console.log("MSG : ", message);
-    // });
   }
   //FCM Ends here
 };
@@ -267,20 +220,15 @@ export const validateUserTimezone = tz => {
   return false;
 };
 
-export const addAlert = async ({ prayer, time, tz, visitor }) => {
-  return new Promise((resolve, reject) => {
+export const addAlert = ({ prayer, time, tz, visitor }) => {
+  return new Promise(async (resolve, reject) => {
     const splitForCron = time.split(":");
     const cronExpression = encodeURIComponent(
       `${splitForCron[1]} ${splitForCron[0]} * * *`
     );
 
-    // let timezoneFrom = 2;
-    // // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
-    // if (tz === "Asia/Calcutta") {
-    //   timezoneFrom = 1;
-    // }
     if (messaging) {
-      // console.log('FCM', await messaging.getToken())
+      console.log('FCM', await messaging.getToken())
       messaging.requestPermission().then(async function() {
         try {
           const token = await messaging.getToken();
@@ -288,66 +236,9 @@ export const addAlert = async ({ prayer, time, tz, visitor }) => {
           https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&real_reminder=1&city=${visitor.city}&postal=${visitor.postal}&user=${visitor.username}
         `);
           const response = await result.json();
-          debugger;
           console.log(response);
           sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
           resolve("OK");
-          // fetch(
-          //   `
-          //   https://www.easycron.com/rest/add?
-          //   token=ac580f3a4fb58c29f766ed2789f63bff&
-          //   cron_expression=${cronExpression}&
-          //   url=https://padachone-dev.herokuapp.com/cron?tz=${tz}****${time}****${prayer}****${token}****1&
-          //   timezone_from=${timezoneFrom}&timezone=${tz}&
-          //   cron_job_name=Test-${prayer}-${time}&
-          //   http_method=GET&
-          //   custom_timeout=5
-          // `,
-          //   {
-          //     mode: "no-cors",
-          //     headers: {
-          //       "Content-Type": "text/html"
-          //     }
-          //   }
-          // )
-          //   .then(resp => {
-          //     console.log("CRON", resp);
-          //     sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-          //     resolve("OK");
-          //   })
-          //   .catch(err => {
-          //     console.log("CRONNNN", err);
-          //     resolve("OK"); // ideally it should be NOTOK
-          //     // reject("NOTOK");
-          //   });
-
-          /*fetch(
-            `https://www.easycron.com/rest/add?
-            token=ac580f3a4fb58c29f766ed2789f63bff&
-            cron_expression=${cronExpression}&
-            url=https://fcm.googleapis.com/fcm/send&
-            timezone_from=${timezoneFrom}&timezone=${tz}&
-            cron_job_name=Test-${prayer}-${time}&
-            http_method=POST&
-            custom_timeout=100&
-            http_headers=Authorization%3Akey%3DAAAA3BtrViw%3AAPA91bHwejU0gjRcivKv4nNjfcvply4dS5NkP_OZqQEaDX0LbQFO76J_1Tu9pod_8eGsP_5_bdZoNGNRH4GFAVYcS7UrDH0eE3A83AUW14lKFp_GZE8LVH9ai4-Xz1irPkn0MFPFb7Zu%0AContent-Type%3Aapplication%2Fjson%0Apriority%3Ahigh%0A
-            &posts={"to":"${token}","notification":{"body":"Reminder : Its ${prayer} time (${time}). How do you like this reminder?","title":"Padachone.com","click_action":"https://www.padachone.com","icon":"https://www.padachone.com/Padachone-Twitter.png"}}`,
-            {
-              mode: "no-cors",
-              headers: {
-                "Content-Type": "text/html"
-              }
-            }
-          )
-            .then(function(response) {
-              console.log("CRON", response);
-              sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              resolve("OK");
-            })
-            .catch(err => {
-              console.log("CRONNNN", err);
-              reject("NOTOK");
-            });*/
         } catch (error) {
           console.log(error);
           reject("NOTOK");
@@ -357,98 +248,25 @@ export const addAlert = async ({ prayer, time, tz, visitor }) => {
   });
 };
 
-export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
-  return new Promise((resolve, reject) => {
+export const addTestAlert = ({ prayer, time, tz, visitor }) => {
+  return new Promise(async (resolve, reject) => {
     const splitForCron = time.split(":");
     const cronExpression = encodeURIComponent(
       `${splitForCron[1]} ${splitForCron[0]} * * *`
     );
 
-    // let timezoneFrom = 2;
-    // // Ignore timezone from value if its Asia/Calcutta as its not programmatically updating Asia/Calcutta in ezcron
-    // if (tz === "Asia/Calcutta") {
-    //   timezoneFrom = 1;
-    // }
     if (messaging) {
-      // console.log('FCM', await messaging.getToken())
+      console.log('FCM', await messaging.getToken())
       messaging.requestPermission().then(async function() {
         try {
           const token = await messaging.getToken();
-          /*const options = {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            mode: 'no-cors',
-            body: JSON.stringify({
-              tz,
-              prayer,
-              time,
-              to: token,
-              cron: cronExpression,
-              city: visitor.city,
-              postal: visitor.postal,
-              user: visitor.username
-            })
-          };
-          const result = await fetch(`
-          http://localhost:1254/alfie
-        `, options);*/
+
           const result = await fetch(`
           https://padachone-dev.herokuapp.com/schedule?tz=${tz}&prayer=${prayer}&time=${time}&to=${token}&cron=${cronExpression}&city=${visitor.city}&postal=${visitor.postal}&user=${visitor.username}
         `);
           const response = await result.json();
-          debugger;
           console.log(response);
           resolve("OK");
-
-          /*fetch(`
-            https://www.easycron.com/rest/add?
-            token=ac580f3a4fb58c29f766ed2789f63bff&
-            cron_expression=${cronExpression}&
-            url=https://padachone-dev.herokuapp.com/cron?tz=${tz}****${time}****${prayer}****${token}&
-            timezone_from=${timezoneFrom}&timezone=${tz}&
-            cron_job_name=Test-${prayer}-${time}&
-            http_method=GET&
-            custom_timeout=5
-          `)
-            .then(resp => {
-              console.log("CRON", resp);
-              // sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              resolve("OK");
-            })
-            .catch(err => {
-              console.log("CRONNNN", err);
-              resolve("OK"); // ideally it should be NOTOK
-              // reject("NOTOK");
-            });*/
-          /*fetch(
-            `https://www.easycron.com/rest/add?
-            token=ac580f3a4fb58c29f766ed2789f63bff&
-            cron_expression=${cronExpression}&
-            url=https://fcm.googleapis.com/fcm/send&
-            timezone_from=${timezoneFrom}&timezone=${tz}&
-            cron_job_name=Test-${prayer}-${time}&
-            http_method=POST&
-            custom_timeout=100&
-            http_headers=Authorization%3Akey%3DAAAA3BtrViw%3AAPA91bHwejU0gjRcivKv4nNjfcvply4dS5NkP_OZqQEaDX0LbQFO76J_1Tu9pod_8eGsP_5_bdZoNGNRH4GFAVYcS7UrDH0eE3A83AUW14lKFp_GZE8LVH9ai4-Xz1irPkn0MFPFb7Zu%0AContent-Type%3Aapplication%2Fjson%0Apriority%3Ahigh%0A
-            &posts={"to":"${token}","notification":{"body":"Reminder : This is a test Reminder for time - ${time}.","title":"Padachone.com","click_action":"https://www.padachone.com","icon":"https://www.padachone.com/Padachone-Twitter.png"}}`,
-            {
-              mode: "no-cors",
-              headers: {
-                "Content-Type": "text/html"
-              }
-            }
-          )
-            .then(function(response) {
-              console.log("CRON", response);
-              sessionStorage.setItem(`padachone_reminder:${time}`, `1`);
-              resolve("OK");
-            })
-            .catch(err => {
-              console.log("CRONNNN", err);
-              reject("NOTOK");
-            });*/
         } catch (error) {
           console.log(error);
           reject("NOTOK");
@@ -460,6 +278,10 @@ export const addTestAlert = async ({ prayer, time, tz, visitor }) => {
 
 export const loggerUtil = async ({ msg }) => {
   const hostname = window.location.hostname;
+  // do not log from ignore hosts (eg :  localhost)
+  if (IGNORE_HOSTS.indexOf(hostname) !== -1) {
+    return;
+  }
   let emoji;
   switch (hostname) {
     case "dev.padachone.com":
@@ -536,7 +358,7 @@ export const addUniqueUser = ({ username, token }) => {
             .then(() => {
               console.log("Successfully updated User data");
               // Whatsapp Logger
-              loggerUtil({msg : `💩${username} just registered`});
+              loggerUtil({ msg: `💩${username} just registered` });
               return;
             })
             .catch(err => {
@@ -550,7 +372,14 @@ export const addUniqueUser = ({ username, token }) => {
         return;
       });
   } catch (err) {
-    debugger;
     console.error(err);
   }
 };
+
+export const getDateTimeOf = (tz="America/New_York") => {
+  return moment.tz(tz).format('DD MMM YYYY, H:mm:ss');
+}
+
+export const addEllipsis = ({word, maxlength}) => {
+  return (word.length > maxlength)?`${word}...`:word;
+}
