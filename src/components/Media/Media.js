@@ -132,6 +132,7 @@ const Media = props => {
         alignItems: "center",
         display: "flex"
       }}
+      actionContainerStyle={{justifyContent:'flex-start'}}
     >
       <div style={{ minHeight: "155px", width: "100%" }}>
         {iframeloading ? (

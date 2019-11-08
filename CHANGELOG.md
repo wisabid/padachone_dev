@@ -41,6 +41,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Media Playback at homescreen (Prayertimes screen) with fullscreen paper
 - Hook up with Prismic
 
+### Changed
+- Modal actions buttons are aligned to left in Media display
+
 ## [3.1.0] - 2019-10-28
 ### Added
 - Code Splitting with lazy-suspense for Travel
