@@ -154,7 +154,9 @@ const Media = props => {
             maxHeight: "100%",
             width: "100vw",
             height: "auto",
-            display:'flex'
+            display:'flex',
+            webkitOverflowScrolling:'touch',
+            overflow:'auto' 
           }}
         >
           {iframeloading ? (
