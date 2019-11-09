@@ -10,7 +10,7 @@ import Fade from "@material-ui/core/Fade";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import CloseIcon from "@material-ui/icons/Close";
-import { Link } from "prismic-reactjs";
+// import { Link } from "prismic-reactjs";
 import { PRISMIC_MEDIALIB_DOC } from "../../utils/constants";
 
 const MediaTitleComp = ({ children, setModal }) => {
@@ -41,6 +41,8 @@ const Media = props => {
 
   const iframeRef = useRef(null);
   const { cmsContents, setModal } = useContext(UserContext);
+  const [medialibrary, setMedialibrary] = useState({});
+  console.log(medialibrary)
   useEffect(() => {
     if (
       cmsContents &&
@@ -50,6 +52,12 @@ const Media = props => {
       console.log(
         cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaUrl
       );
+      // setMedialibrary({
+      //     type : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaType,
+      //     url : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaUrl,
+      //     title : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaTitle,
+      //     allowfs : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.allowFullScreen
+      //   })
     }
   }, [cmsContents]);
   useEffect(() => {
