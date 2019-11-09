@@ -48,7 +48,7 @@ const Media = props => {
       cmsContents.data.hasOwnProperty(PRISMIC_MEDIALIB_DOC)
     ) {
       console.log(
-        cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaTitle
+        cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaUrl
       );
     }
   }, [cmsContents]);
@@ -64,7 +64,12 @@ const Media = props => {
     visibility: "hidden",
     position: "absolute"
   });
-
+  // setMedialibrary({
+  //   type : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaType,
+  //   url : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaUrl,
+  //   title : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.mediaTitle,
+  //   allowfs : cmsContents.data[PRISMIC_MEDIALIB_DOC].edges[0].node.allowFullScreen
+  // })
   const initialState = {
     description: "",
     title: (
@@ -155,8 +160,8 @@ const Media = props => {
             width: "100vw",
             height: "auto",
             display:'flex',
-            webkitOverflowScrolling:'touch',
-            overflow:'auto' 
+            // webkitOverflowScrolling:'touch',
+            // overflow:'auto' 
           }}
         >
           {iframeloading ? (
@@ -175,10 +180,10 @@ const Media = props => {
               onError={() => console.log("ERROR")}
               style={iframestyles}
               allowFullScreen
-              minHeight={'155px'}
+              // minHeight={'155px'}
               width={'100vw'}
-              maxWidth={'100%'}
-              maxHeight={'100%'}
+              // maxWidth={'100%'}
+              // maxHeight={'100%'}
               height={'auto'}
             />
           </Fade>

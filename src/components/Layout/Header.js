@@ -135,7 +135,7 @@ const Header = ({
             // horizontal: 'left',}}
           >
             <YouTubeIcon
-              fontSize="large"
+              fontSize="default"
               style={{ color: "#fff" }}
               onClick={() => handleNav("setMediamodal")}
             />

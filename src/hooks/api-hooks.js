@@ -425,10 +425,9 @@ export const useMessageBroadcast = () => {
                   node {
                     mediaTitle
                     mediaType
-                    mediaUrl {
-                      _linkType
-                    }
+                    mediaUrl
                     enabled
+                    allowFullScreen
                   }
                 }
               }
@@ -457,6 +456,7 @@ export const useMessageBroadcast = () => {
   return [msg];
 };
 
+/* Custom Hook for Prismic Site media doc */
 export const useCmsAsset = (...assets) => {
   const { cmsContents } = useContext(UserContext);
   const [asset, setAsset] = useState([]);
