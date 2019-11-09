@@ -3,6 +3,8 @@ import { useWhatsapplogger } from "../../hooks/api-hooks";
 import { UserContext } from "../../store/context/userContext";
 import DialogModal from "../Modal";
 import CardMedia from "@material-ui/core/CardMedia";
+import Slide from "@material-ui/core/Slide";
+
 import Skeleton from "@material-ui/lab/Skeleton";
 import Fade from "@material-ui/core/Fade";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -11,7 +13,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { Link } from "prismic-reactjs";
 import { PRISMIC_MEDIALIB_DOC } from "../../utils/constants";
 
-const MediaTitleComp = ({children, setModal}) => {
+const MediaTitleComp = ({ children, setModal }) => {
   return (
     <div
       style={{
@@ -24,12 +26,13 @@ const MediaTitleComp = ({children, setModal}) => {
       {children}
       <CloseIcon
         color="primary"
-        onClick={() => {return setModal({ show: false, name: "" })}}
+        onClick={() => {
+          return setModal({ show: false, name: "" });
+        }}
       />
     </div>
   );
 };
-
 
 const Media = props => {
   // All you need for loggin
@@ -61,10 +64,14 @@ const Media = props => {
     visibility: "hidden",
     position: "absolute"
   });
-  
+
   const initialState = {
     description: "",
-    title: <MediaTitleComp setModal={setModal}><Skeleton width="100%" /></MediaTitleComp>,
+    title: (
+      <MediaTitleComp setModal={setModal}>
+        <Skeleton width="100%" />
+      </MediaTitleComp>
+    ),
     primaryButton: <ThumbUpIcon />,
     secondaryButton: <ThumbDownIcon />,
     error: false,
@@ -76,7 +83,11 @@ const Media = props => {
       setIframestyles({ visibility: "visible", position: "static" });
       setModalConfig({
         ...modalConfig,
-        title: <MediaTitleComp setModal={setModal}><span>Staying Positive After Hardships</span></MediaTitleComp>
+        title: (
+          <MediaTitleComp setModal={setModal}>
+            <span>Staying Positive After Hardships</span>
+          </MediaTitleComp>
+        )
       });
     }
   }, [iframeloading, modalConfig]);
@@ -113,48 +124,66 @@ const Media = props => {
     });
   };
   return (
-    <DialogModal
-      {...props}
-      error={modalConfig.error}
-      title={modalConfig.title}
-      description={modalConfig.description}
-      primaryButton={
-        modalConfig.primaryButton ? modalConfig.primaryButton : null
-      }
-      handlePrimaryAction={() => handlePrimary()}
-      secondaryButton={modalConfig.secondaryButton}
-      handleSecondaryAction={() => handleSecondary()}
-      loading={modalConfig.loading}
-      fullWidth={true}
-      fullScreen={true}
-      contentContainerStyle={{
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex"
-      }}
-      actionContainerStyle={{justifyContent:'flex-start'}}
-    >
-      <div style={{ minHeight: "155px", width: "100%" }}>
-        {iframeloading ? (
-          <div>
-            <Skeleton variant="rect" width={"100%"} height={145} />
-            {/* <Skeleton width="60%" /> */}
-          </div>
-        ) : null}
-        <Fade in={true} style={{ transitionDelay: "1200ms" }}>
-          <CardMedia
-            component="iframe"
-            title="Staying Positive After Hardships"
-            src="https://www.youtube.com/embed/RgGh2hlHbc4?enablejsapi=1&origin=https://www.padachone.com"
-            ref={iframeRef}
-            onLoad={() => setIframeloading(false)}
-            onError={() => console.log("ERROR")}
-            style={iframestyles}
-            allowFullScreen
-          />
-        </Fade>
+    <Slide direction="down" in={true} mountOnEnter unmountOnExit>
+      <div>
+      <DialogModal
+        {...props}
+        error={modalConfig.error}
+        title={modalConfig.title}
+        description={modalConfig.description}
+        primaryButton={
+          modalConfig.primaryButton ? modalConfig.primaryButton : null
+        }
+        handlePrimaryAction={() => handlePrimary()}
+        secondaryButton={modalConfig.secondaryButton}
+        handleSecondaryAction={() => handleSecondary()}
+        loading={modalConfig.loading}
+        fullWidth={true}
+        fullScreen={true}
+        contentContainerStyle={{
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex"
+        }}
+        actionContainerStyle={{ justifyContent: "flex-start" }}
+      >
+        <div
+          style={{
+            minHeight: "155px",
+            maxWidth: "100%",
+            maxHeight: "100%",
+            width: "100vw",
+            height: "auto",
+            display:'flex'
+          }}
+        >
+          {iframeloading ? (
+            <div>
+              <Skeleton variant="rect" width={"80vw"} height={145} />
+              {/* <Skeleton width="60%" /> */}
+            </div>
+          ) : null}
+          <Fade in={true} style={{ transitionDelay: "1200ms" }}>
+            <CardMedia
+              component="iframe"
+              title="Staying Positive After Hardships"
+              src="https://www.youtube.com/embed/RgGh2hlHbc4?enablejsapi=1&origin=https://www.padachone.com"
+              ref={iframeRef}
+              onLoad={() => setIframeloading(false)}
+              onError={() => console.log("ERROR")}
+              style={iframestyles}
+              allowFullScreen
+              minHeight={'155px'}
+              width={'100vw'}
+              maxWidth={'100%'}
+              maxHeight={'100%'}
+              height={'auto'}
+            />
+          </Fade>
+        </div>
+      </DialogModal>
       </div>
-    </DialogModal>
+    </Slide>
   );
 };
 
