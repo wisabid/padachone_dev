@@ -17,7 +17,7 @@
     "firebase": "^6.2.4",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "notistack": "^0.8.6",
     "prismic-javascript": "^2.0.3",
     "prismic-reactjs": "^1.0.0",
